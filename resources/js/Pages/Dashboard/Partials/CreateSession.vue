@@ -7,7 +7,6 @@ import axios from "axios";
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import Dropdown from '@/Components/Dropdown.vue';
 import Toggle from '@/Components/Toggle.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -48,9 +47,17 @@ const getGames = async () => {
     hasGames.value = games.value.length > 0;
 };
 
+const onStartClick = async () => {
+
+};
+
+const onAddAndStartClick = async () => {
+
+};
+
 const toggleAddNewGameForm = (newStatus) => {
     showingAddNewGameForm.value = newStatus;
-    selectedGame.value = '';
+    selectedGame.value = {};
 };
 
 const closeModal = () => {
@@ -86,7 +93,7 @@ onMounted(() => getGames());
                         </form>
                     </div>
                     <div class="flex sm:w-1/2 place-content-center">
-                        <img v-if="selectedGame.coverart" :src="selectedGame.coverart" class="object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-60 sm:w-36" />
+                        <img v-if="selectedGame.coverart" :src="selectedGame.coverart" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-36 sm:w-24" />
                     </div>
                 </div>
                 <Toggle class="mt-5" label="Add New Game" @updateStatus="toggleAddNewGameForm"/>
@@ -122,12 +129,22 @@ onMounted(() => getGames());
                     <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
 
                     <PrimaryButton
+                    v-if="!showingAddNewGameForm"
+                        class="ms-3"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing || !selectedGame"
+                        @click="onStartClick"
+                    >
+                        Start
+                    </PrimaryButton>
+                    <PrimaryButton
+                        v-if="showingAddNewGameForm"
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
-                        @click="deleteUser"
+                        @click="onAddAndStartClick"
                     >
-                        Start
+                        Add & Start
                     </PrimaryButton>
                 </div>
             </div>

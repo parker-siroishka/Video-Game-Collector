@@ -13,12 +13,22 @@ class GameController extends Controller
     /**
      * Handle an incoming created game
      */
-    // public function store(Request $request): RedirectResponse
-    // {
-    //     $request->validate([
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'coverart' => 'required',
+            'playtime' => 'required|integer'
+        ]);
 
-    //     ]);
-    // }
+        $game = Game::create([
+            'title' => $request->title,
+            'coverart' => $request->coverart,
+            'playtime' => $request->playtime,
+        ]);
+
+        return redirect(route('dashboard', absolute: false));
+    }
 
     public function getUserGames(Request $request) 
     {
