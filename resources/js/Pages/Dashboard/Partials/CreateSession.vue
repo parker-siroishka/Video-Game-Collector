@@ -1,51 +1,24 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
-import { onMounted, watch, ref, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import axios from "axios";
 
-import { isValidUrl } from '../../../Utils/urlUtils';
-import { COVER_ART_PLACEHOLDER } from '@/Constants/urls';
+import AddNewGameSessionForm from '@/Pages/Dashboard/Partials/AddNewGameSessionForm.vue';
 
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import Toggle from '@/Components/Toggle.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import NumberInput from '@/Components/NumberInput.vue';
 
 const showingCreateSessionModal = ref(false);
 const showingAddNewGameForm = ref(false);
-const passwordInput = ref(null);
 const hasGames = ref(false);
 const games = ref(['test']);
 const selectedGame = ref('');
-const newGameCoverArt = ref(null);
-
-const form = useForm({
-    title: '',
-    thumbnailUrl: '',
-    playtime: 0,
-});
-
-const thumbnailUrl = computed({
-  get: () => form.thumbnailUrl,
-  set: (value) => form.thumbnailUrl = value,
-});
 
 const showCreateSessionModal = () => {
     showingCreateSessionModal.value = true;
     showingAddNewGameForm.value = false;
-};
-
-const deleteUser = () => {
-    form.delete(route('profile.destroy'), {
-        preserveScroll: true,
-        onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
-        onFinish: () => form.reset(),
-    });
 };
 
 // GET and sort current games alphabetically
@@ -56,11 +29,11 @@ const getGames = async () => {
 };
 
 const onStartClick = async () => {
-
+ // todo
 };
 
 const onAddAndStartClick = async () => {
-
+ // todo
 };
 
 const toggleAddNewGameForm = (newStatus) => {
@@ -70,21 +43,10 @@ const toggleAddNewGameForm = (newStatus) => {
 
 const closeModal = () => {
     showingCreateSessionModal.value = false;
-    form.reset();
+    // form.reset();
 };
 
 onMounted(() => getGames());
-
-watch(thumbnailUrl, async (newUrl, oldUrl) => {
-    if (newUrl) {
-            if (await isValidUrl(newUrl)) {
-                newGameCoverArt.value.src = newUrl;
-            } else {
-                newGameCoverArt.value.src = COVER_ART_PLACEHOLDER;
-        }
-    }
-}, { immediate: true });
-
 
 </script>
 
@@ -111,41 +73,17 @@ watch(thumbnailUrl, async (newUrl, oldUrl) => {
                         </form>
                     </div>
                     <div class="flex sm:w-1/2 place-content-center">
-                        <img v-if="selectedGame.coverart" :src="selectedGame.coverart" onerror="this.onerror=null;this.src='https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg';" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-36 sm:w-24" />
+                        <img v-if="selectedGame.coverart" :src="selectedGame.coverart" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-36 sm:w-24" />
                     </div> 
                 </div>
                 <Toggle class="mt-5" label="Add New Game" @updateStatus="toggleAddNewGameForm"/>
                 <div class="mt-5" v-show="showingAddNewGameForm">
-                    <InputLabel for="title" value="Title" />
-                    <TextInput
-                        id="title"
-                        class="mt-1 block w-3/4"
-                        required
-                        placeholder="Enter game title..."
-                        v-model="form.title"
-                    />
-                    <InputLabel for="coverArt" value="Cover Art URL" class="mt-5"/>
-                    <TextInput
-                        id="coverArt"
-                        class="mt-1 block w-3/4"
-                        required
-                        placeholder="Enter cover art URL"
-                        v-model="form.thumbnailUrl"
-                    />
-                    <img v-if="thumbnailUrl" ref="newGameCoverArt" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24" />
-                    <InputLabel for="playtime" value="Playtime (hrs)" class="mt-5"/>
-                    <NumberInput
-                        id="playtime"
-                        class="mt-1 block w-3/4"
-                        required
-                        placeholder=""
-                        v-model="form.playtime"
-                    />
+                    <AddNewGameSessionForm />
                 </div>
                 <div class="mt-6 flex justify-end">
                     <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
 
-                    <PrimaryButton
+                    <!-- <PrimaryButton
                     v-if="!showingAddNewGameForm"
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
@@ -162,7 +100,7 @@ watch(thumbnailUrl, async (newUrl, oldUrl) => {
                         @click="onAddAndStartClick"
                     >
                         Add & Start
-                    </PrimaryButton>
+                    </PrimaryButton> -->
                 </div>
             </div>
         </Modal>
