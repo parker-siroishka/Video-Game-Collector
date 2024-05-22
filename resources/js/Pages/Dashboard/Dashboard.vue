@@ -1,8 +1,33 @@
-<script setup>
+<script>
+import { ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CreateSession from './Partials/CreateSession.vue';
+import AddNewGameModal from './Partials/AddNewGameModal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { Head } from '@inertiajs/vue3';
+
+export default {
+    components: {
+        AuthenticatedLayout,
+        CreateSession,
+        PrimaryButton,
+        AddNewGameModal,
+        Head
+    },
+    setup() {
+        const showAddNewGameModal = ref(false);
+
+        const addNewGameClicked = () => {
+            showAddNewGameModal.value = true;
+        };
+
+        return {
+            addNewGameClicked,
+            showAddNewGameModal
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -16,12 +41,15 @@ import { Head } from '@inertiajs/vue3';
         </div>
         <div class="fixed bottom-4 right-4">
             <div class="flex items-center">
-                <PrimaryButton>
+                <PrimaryButton @click="addNewGameClicked">
                     <img src="../../../../resources/assets/images/plus-icon.png" 
                          class="block h-5 w-auto fill-current text-gray-800"
                     />
                     <h3 class="pl-3">Add New Game</h3>
                 </PrimaryButton>
+                <AddNewGameModal 
+                    :showAddNewGameModal="showAddNewGameModal"
+                    @update:showAddNewGameModal="showAddNewGameModal = $event"/>
             </div>
         </div>
     </AuthenticatedLayout>

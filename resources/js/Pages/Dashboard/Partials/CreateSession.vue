@@ -1,53 +1,68 @@
-<script setup>
+<script>
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 
-import AddNewGameSessionForm from '@/Pages/Dashboard/Partials/AddNewGameSessionForm.vue';
+import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
 
 import PrimaryButton from '@/Components/PrimaryButton.vue'
-import InputError from '@/Components/InputError.vue';
 import Toggle from '@/Components/Toggle.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 
-const showingCreateSessionModal = ref(false);
-const showingAddNewGameForm = ref(false);
-const hasGames = ref(false);
-const games = ref(['test']);
-const selectedGame = ref('');
+export default {
+    components: {
+        PrimaryButton,
+        SecondaryButton,
+        Modal,
+        Toggle,
+        AddNewGameForm
+    },
+    setup() {
+        const showingCreateSessionModal = ref(false);
+        const showingAddNewGameForm = ref(false);
+        const hasGames = ref(false);
+        const games = ref(['test']);
+        const selectedGame = ref('');
 
-const showCreateSessionModal = () => {
-    showingCreateSessionModal.value = true;
-    showingAddNewGameForm.value = false;
-};
+        const showCreateSessionModal = () => {
+            showingCreateSessionModal.value = true;
+            showingAddNewGameForm.value = false;
+        };
 
-// GET and sort current games alphabetically
-const getGames = async () => {
-    const { data } = await axios.get('/games');
-    games.value = data.sort((a, b) => a.title.localeCompare(b.title));;
-    hasGames.value = games.value.length > 0;
-};
+        // GET and sort current games alphabetically
+        const getGames = async () => {
+            const { data } = await axios.get('/games');
+            games.value = data.sort((a, b) => a.title.localeCompare(b.title));;
+            hasGames.value = games.value.length > 0;
+        };
 
-const onStartClick = async () => {
- // todo
-};
+        const onCancel = () => {
+            showingCreateSessionModal.value = false;
+        };
 
-const onAddAndStartClick = async () => {
- // todo
-};
+        const onSubmit = async () => {
+            console.log('submitted');
+        };
 
-const toggleAddNewGameForm = (newStatus) => {
-    showingAddNewGameForm.value = newStatus;
-    selectedGame.value = '';
-};
+        const toggleAddNewGameForm = (newStatus) => {
+            showingAddNewGameForm.value = newStatus;
+            selectedGame.value = '';
+        };
 
-const closeModal = () => {
-    showingCreateSessionModal.value = false;
-    // form.reset();
-};
-
-onMounted(() => getGames());
-
+        onMounted(() => getGames());
+        return {
+            showCreateSessionModal,
+            onCancel,
+            onSubmit,
+            toggleAddNewGameForm,
+            showingCreateSessionModal,
+            showingAddNewGameForm,
+            hasGames,
+            games,
+            selectedGame
+        };
+    }
+}
 </script>
 
 <template>
@@ -57,7 +72,7 @@ onMounted(() => getGames());
             <PrimaryButton @click="showCreateSessionModal" class="mr-6">start</PrimaryButton>
         </div>
 
-        <Modal :show="showingCreateSessionModal" @close="closeModal">
+        <Modal :show="showingCreateSessionModal" @close="onCancel">
             <div class="p-6">
                 <h2 class="text-lg font-extrabold text-gray-900">
                     Start a new game session
@@ -78,29 +93,19 @@ onMounted(() => getGames());
                 </div>
                 <Toggle class="mt-5" label="Add New Game" @updateStatus="toggleAddNewGameForm"/>
                 <div class="mt-5" v-show="showingAddNewGameForm">
-                    <AddNewGameSessionForm />
+                    <AddNewGameForm 
+                        :onSubmit="onSubmit"
+                        :onCancel="onCancel"/>
                 </div>
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                    <!-- <PrimaryButton
-                    v-if="!showingAddNewGameForm"
+                <!-- CTA buttons for starting session with pre-existing game -->
+                <div class="mt-6 flex justify-end" v-show="!showingAddNewGameForm">
+                    <SecondaryButton @click="onCancel"> Cancel </SecondaryButton>
+                    <PrimaryButton
                         class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing || !selectedGame"
-                        @click="onStartClick"
-                    >
+                        :disabled="!selectedGame"
+                        @click="onSubmit">
                         Start
                     </PrimaryButton>
-                    <PrimaryButton
-                        v-if="showingAddNewGameForm"
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        @click="onAddAndStartClick"
-                    >
-                        Add & Start
-                    </PrimaryButton> -->
                 </div>
             </div>
         </Modal>

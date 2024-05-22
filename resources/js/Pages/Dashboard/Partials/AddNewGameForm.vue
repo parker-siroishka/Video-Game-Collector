@@ -7,6 +7,8 @@ import { COVER_ART_PLACEHOLDER } from '@/Constants/urls';
 import TextInput from '@/Components/TextInput.vue';
 import NumberInput from '@/Components/NumberInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 import { isValidUrl } from '../../../Utils/urlUtils';
 
@@ -14,12 +16,24 @@ export default {
   components: {
     TextInput,
     NumberInput,
-    InputLabel
+    InputLabel,
+    PrimaryButton,
+    SecondaryButton
   },
-  setup() {
+  props: {
+    onSubmit: {
+      type: Function,
+      required: true
+    },
+    onCancel: {
+      type: Function,
+      required: true
+    }
+},
+  setup(props) {
     const newGameCoverArt = ref(null);
 
-    const form = useForm({
+    const addNewGameForm = useForm({
       title: '',
       thumbnailUrl: '',
       playtime: 0,
@@ -27,9 +41,17 @@ export default {
     });
 
     const thumbnailUrl = computed({
-      get: () => form.thumbnailUrl,
-      set: (value) => form.thumbnailUrl = value,
+      get: () => addNewGameForm.thumbnailUrl,
+      set: (value) => addNewGameForm.thumbnailUrl = value,
     });
+
+    const onSubmitClick = () => {
+      props.onSubmit();
+    };
+
+    const onCancelClick = () => {
+      props.onCancel();
+    };
 
     watch(thumbnailUrl, async (newUrl, oldUrl) => {
       if (newUrl) {
@@ -42,9 +64,11 @@ export default {
     }, { immediate: true });
 
     return {
-      form,
+      addNewGameForm,
       thumbnailUrl,
-      newGameCoverArt
+      newGameCoverArt,
+      onCancelClick,
+      onSubmitClick
     };
   }
 }
@@ -57,7 +81,7 @@ export default {
         class="mt-1 block w-full sm:w-3/4"
         required
         placeholder="Enter game title..."
-        v-model="form.title"
+        v-model="addNewGameForm.title"
       />
       <InputLabel for="coverArt" value="Cover Art URL" class="mt-5"/>
       <TextInput
@@ -65,7 +89,7 @@ export default {
         class="mt-1 block  w-full sm:w-3/4"
         required
         placeholder="Enter cover art URL"
-        v-model="form.thumbnailUrl"
+        v-model="addNewGameForm.thumbnailUrl"
       />
       <img v-if="thumbnailUrl" ref="newGameCoverArt" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24" />
     <InputLabel for="playtime" value="Playtime (hrs)" class="mt-5"/>
@@ -74,7 +98,7 @@ export default {
         class="mt-1 block w-full sm:w-2/5"
         required
         placeholder=""
-        v-model="form.playtime"
+        v-model="addNewGameForm.playtime"
     />
 
     <InputLabel for="estimatedPlaytime" value="Estimated Playtime to Complete (hrs)" class="mt-5"/>
@@ -83,7 +107,17 @@ export default {
         class="mt-1 block w-full sm:w-2/5"
         required
         placeholder=""
-        v-model="form.estimatedPlaytime"
+        v-model="addNewGameForm.estimatedPlaytime"
     />
     </form>
+    <div class="mt-6 flex justify-end">
+      <SecondaryButton @click="onCancel"> Cancel </SecondaryButton>
+      <PrimaryButton
+          class="ms-3"
+          :class="{ 'opacity-25': addNewGameForm.processing }"
+          :disabled="addNewGameForm.processing"
+          @click="onSubmitClick">
+          Add & Start
+      </PrimaryButton>
+    </div>
   </template>
