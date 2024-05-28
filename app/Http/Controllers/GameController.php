@@ -16,10 +16,11 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string',
             'coverart' => 'required',
             'playtime' => 'required|integer',
-            'estimated_playtime' => 'integer'
+            'estimated_playtime' => 'integer',
+            'console' => 'string'
         ]);
 
         $game = Game::create([
@@ -27,7 +28,8 @@ class GameController extends Controller
             'title' => $request->title,
             'coverart' => $request->coverart,
             'playtime' => $request->playtime,
-            'estimated_playtime' => $request->estimatedPlaytime
+            'estimated_playtime' => $request->estimatedPlaytime,
+            'console' => $request->console,
         ]);
 
         return response()->json(['success' => 'Game created successfully.', 'game' => $game]);
@@ -39,4 +41,15 @@ class GameController extends Controller
         $games = Game::where('user_id', $currentUserId)->get();
         return response()->json( $games );
     }
+
+    public function getUniqueConsoles(Request $request)
+    {
+        $currentUserId = $request->user()->id;
+        $uniqueConsoles = Game::where('user_id', $currentUserId)
+                            ->distinct()
+                            ->get(['console']);
+
+        return response()->json($uniqueConsoles);
+    }
+
 }
