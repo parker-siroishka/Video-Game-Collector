@@ -1,5 +1,5 @@
 <script>
-import { onMounted, ref } from 'vue';
+import { onUpdated, ref } from 'vue';
 import axios from "axios";
 
 import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
@@ -49,7 +49,8 @@ export default {
             selectedGame.value = '';
         };
 
-        onMounted(() => getGames());
+        onUpdated(() => getGames());
+
         return {
             showCreateSessionModal,
             onCancel,
@@ -95,7 +96,8 @@ export default {
                 <div class="mt-5" v-show="showingAddNewGameForm">
                     <AddNewGameForm 
                         :onSubmit="onSubmit"
-                        :onCancel="onCancel"/>
+                        :onCancel="onCancel"
+                        submitLabel='Add & Start Session'/>
                 </div>
                 <!-- CTA buttons for starting session with pre-existing game -->
                 <div class="mt-6 flex justify-end" v-show="!showingAddNewGameForm">
@@ -104,7 +106,7 @@ export default {
                         class="ms-3"
                         :disabled="!selectedGame"
                         @click="onSubmit">
-                        Start
+                        Start Session
                     </PrimaryButton>
                 </div>
             </div>

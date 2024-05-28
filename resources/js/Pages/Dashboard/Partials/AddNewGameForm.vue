@@ -28,7 +28,11 @@ export default {
     onCancel: {
       type: Function,
       required: true
-    }
+    },
+    submitLabel: {
+      type: String,
+      required: false
+    },
 },
   setup(props) {
     const newGameCoverArt = ref(null);
@@ -46,7 +50,7 @@ export default {
     });
 
     const onSubmitClick = () => {
-      props.onSubmit();
+      props.onSubmit(addNewGameForm);
     };
 
     const onCancelClick = () => {
@@ -117,7 +121,7 @@ export default {
           :class="{ 'opacity-25': addNewGameForm.processing }"
           :disabled="addNewGameForm.processing"
           @click="onSubmitClick">
-          Add & Start
+          {{ submitLabel }}
       </PrimaryButton>
     </div>
   </template>
