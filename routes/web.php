@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/games', [GameController::class, 'getUserGames'])->name('games.get');
+    Route::post('/games', [GameController::class, 'store'])->name('games.post');
 });
 
 require __DIR__.'/auth.php';
