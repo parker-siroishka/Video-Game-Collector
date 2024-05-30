@@ -19,6 +19,7 @@ class Game extends Model
         'coverart',
         'playtime',
         'estimated_playtime',
-        'user_id'
+        'user_id',
+        'console'
     ];
 }

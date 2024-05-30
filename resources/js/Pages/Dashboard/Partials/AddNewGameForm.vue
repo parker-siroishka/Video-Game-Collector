@@ -1,5 +1,7 @@
 <script>
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, onMounted } from 'vue';
+import Multiselect from 'vue-multiselect'
+import axios from "axios";
 import { useForm } from '@inertiajs/vue3';
 
 import { COVER_ART_PLACEHOLDER } from '@/Constants/urls';
@@ -18,7 +20,8 @@ export default {
     NumberInput,
     InputLabel,
     PrimaryButton,
-    SecondaryButton
+    SecondaryButton,
+    Multiselect
   },
   props: {
     onSubmit: {
@@ -36,12 +39,14 @@ export default {
 },
   setup(props) {
     const newGameCoverArt = ref(null);
+    const consoles = ref([]);
 
     const addNewGameForm = useForm({
       title: '',
       thumbnailUrl: '',
       playtime: 0,
-      estimatedPlaytime: 0
+      estimatedPlaytime: 0,
+      console: ''
     });
 
     const thumbnailUrl = computed({
@@ -57,6 +62,12 @@ export default {
       props.onCancel();
     };
 
+    // GET and sort current consoles alphabetically
+    const getUniqueConsoles = async () => {
+      const { data } = await axios.get('/consoles');
+      consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
+    };
+
     watch(thumbnailUrl, async (newUrl, oldUrl) => {
       if (newUrl) {
         if (await isValidUrl(newUrl)) {
@@ -67,16 +78,22 @@ export default {
       }
     }, { immediate: true });
 
+    onMounted(() => getUniqueConsoles());
+
     return {
       addNewGameForm,
       thumbnailUrl,
       newGameCoverArt,
       onCancelClick,
-      onSubmitClick
+      onSubmitClick,
+      consoles
     };
   }
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <template>
     <form>
       <InputLabel for="title" value="Title" />
@@ -84,7 +101,7 @@ export default {
         id="title"
         class="mt-1 block w-full sm:w-3/4"
         required
-        placeholder="Enter game title..."
+        placeholder="Enter game title"
         v-model="addNewGameForm.title"
       />
       <InputLabel for="coverArt" value="Cover Art URL" class="mt-5"/>
@@ -96,6 +113,14 @@ export default {
         v-model="addNewGameForm.thumbnailUrl"
       />
       <img v-if="thumbnailUrl" ref="newGameCoverArt" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24" />
+      <InputLabel for="console" value="Add or Select a Console" class="mt-5"/>
+        <div class="sm:w-3/4">
+          <Multiselect class="border-gray-700 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" v-model="addNewGameForm.console" :options="consoles" placeholder="Select a console" label="console" track-by="console" id="console">
+            <template #noResult>
+              <span class="block hover:bg-gray-100 w-100" onclick="addToConsoles">Add new console</span>
+            </template>
+          </Multiselect>
+        </div>
     <InputLabel for="playtime" value="Playtime (hrs)" class="mt-5"/>
     <NumberInput
         id="playtime"

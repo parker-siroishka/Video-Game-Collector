@@ -27,11 +27,13 @@ export default {
 
         const onSubmit = async (form) => {
             try {
+                console.log(form);
                 const response = await axios.post('/games', {
                     title: form.title,
                     coverart: form.thumbnailUrl,
                     playtime: form.playtime,
-                    estimatedPlaytime: form.estimatedPlaytime
+                    estimatedPlaytime: form.estimatedPlaytime,
+                    console: form.console.console
                 });
                 // Close modal on success
                 show.value = false;
