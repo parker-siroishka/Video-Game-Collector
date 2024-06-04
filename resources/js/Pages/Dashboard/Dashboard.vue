@@ -39,7 +39,7 @@ export default {
                 <CreateSession />
             </div>
         </div>
-        <div class="fixed bottom-4 right-4">
+        <div class="fixed bottom-8 right-8">
             <div class="flex items-center">
                 <PrimaryButton @click="addNewGameClicked">
                     <img src="../../../../resources/assets/images/plus-icon.png" 

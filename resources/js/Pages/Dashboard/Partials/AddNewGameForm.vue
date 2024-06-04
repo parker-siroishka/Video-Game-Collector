@@ -36,10 +36,11 @@ export default {
       type: String,
       required: false
     },
-},
+  },
   setup(props) {
     const newGameCoverArt = ref(null);
     const consoles = ref([]);
+    const typed = ref('');
 
     const addNewGameForm = useForm({
       title: '',
@@ -68,6 +69,12 @@ export default {
       consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
     };
 
+    const addConsole = () => {
+      console.log(typed.value, consoles.value);
+      if (!consoles.value.includes(typed.value)) consoles.value.push({ console: typed.value });
+      addNewGameForm.console = typed.value;
+    }
+
     watch(thumbnailUrl, async (newUrl, oldUrl) => {
       if (newUrl) {
         if (await isValidUrl(newUrl)) {
@@ -86,7 +93,9 @@ export default {
       newGameCoverArt,
       onCancelClick,
       onSubmitClick,
-      consoles
+      consoles,
+      addConsole,
+      typed
     };
   }
 }
@@ -114,10 +123,15 @@ export default {
       />
       <img v-if="thumbnailUrl" ref="newGameCoverArt" class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24" />
       <InputLabel for="console" value="Add or Select a Console" class="mt-5"/>
-        <div class="sm:w-3/4">
-          <Multiselect class="border-gray-700 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" v-model="addNewGameForm.console" :options="consoles" placeholder="Select a console" label="console" track-by="console" id="console">
+        <div @keyup.enter="addConsole($event)" class="sm:w-3/4">
+          <Multiselect 
+            class="border-gray-700 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+            v-model="addNewGameForm.console" :options="consoles" 
+            placeholder="Select a console" 
+            label="console" track-by="console" id="console"
+            @search-change="typed = $event">
             <template #noResult>
-              <span class="block hover:bg-gray-100 w-100" onclick="addToConsoles">Add new console</span>
+              <span class="block hover:bg-gray-100 w-100" onclick="addToConsoles">Press 'Enter' to add new console</span>
             </template>
           </Multiselect>
         </div>
