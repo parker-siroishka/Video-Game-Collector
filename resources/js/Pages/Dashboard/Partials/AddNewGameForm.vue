@@ -70,7 +70,6 @@ export default {
     };
 
     const addConsole = () => {
-      console.log(typed.value, consoles.value);
       if (!consoles.value.includes(typed.value)) consoles.value.push({ console: typed.value });
       addNewGameForm.console = typed.value;
     }

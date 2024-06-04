@@ -27,7 +27,6 @@ export default {
 
         const onSubmit = async (form) => {
             try {
-                console.log(form);
                 const response = await axios.post('/games', {
                     title: form.title,
                     coverart: form.thumbnailUrl,
