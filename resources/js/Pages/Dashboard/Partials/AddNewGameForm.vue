@@ -65,7 +65,7 @@ export default {
 
     // GET and sort current consoles alphabetically
     const getUniqueConsoles = async () => {
-      const { data } = await axios.get('/consoles');
+      const { data } = await axios.get(route('games.getUniqueConsoles'));
       consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
     };
 

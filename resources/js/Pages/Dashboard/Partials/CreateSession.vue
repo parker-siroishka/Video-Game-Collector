@@ -31,7 +31,7 @@ export default {
 
         // GET and sort current games alphabetically
         const getGames = async () => {
-            const { data } = await axios.get('/games');
+            const { data } = await axios.get(route('games.get'));
             games.value = data.sort((a, b) => a.title.localeCompare(b.title));;
             hasGames.value = games.value.length > 0;
         };
@@ -41,7 +41,12 @@ export default {
         };
 
         const onSubmit = async () => {
-            console.log('submitted');
+            if(!showingAddNewGameForm.value) {
+                console.log('Start');
+                // TODO: create session in db
+            } else {
+                console.log('Add & Start');
+            }
         };
 
         const toggleAddNewGameForm = (newStatus) => {
@@ -78,6 +83,12 @@ export default {
                 <h2 class="text-lg font-extrabold text-gray-900">
                     Start a new game session
                 </h2>
+                <!-- 
+                    TODO: implement these components Components
+                    <PlaySessionsContainer>
+                        <PlaySession />
+                    </PlaySessionsContainer> 
+                -->
                 <div class="flex place-content-between">
                     <div class="sm:w-1/2">
                         <form class="max-w-sm mt-3">
