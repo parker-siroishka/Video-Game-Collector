@@ -42,8 +42,21 @@ export default {
 
         const onSubmit = async () => {
             if(!showingAddNewGameForm.value) {
-                console.log('Start');
-                // TODO: create session in db
+                const sessionGame = selectedGame.value;
+                try {
+                    const response = await axios.post(route('playSessions.post'), {
+                        game_id: sessionGame.id,
+                        is_active: true,
+                        notes: null,
+                        session_duration: null
+                    });
+                    // Close modal on success
+                    showingCreateSessionModal.value = false;
+                
+                } catch (error) {
+                    // Handle error
+                    console.error('Error starting session:', error);
+                }
             } else {
                 console.log('Add & Start');
             }
