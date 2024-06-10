@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PlaySessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,9 +24,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/games', [GameController::class, 'getUserGames'])->name('games.get');
-    Route::get('/consoles', [GameController::class, 'getUniqueConsoles'])->name('games.getUniqueConsoles');
     Route::post('/games', [GameController::class, 'store'])->name('games.post');
+    
+    Route::get('/consoles', [GameController::class, 'getUniqueConsoles'])->name('games.getUniqueConsoles');
+
+    Route::post('/playsessions', [PlaySessionController::class, 'store'])->name('playSessions.post');
+    Route::get('/playsessions', [PlaySessionController::class, 'getUserPlaySessions'])->name('playSessions.get');
 });
 
 require __DIR__.'/auth.php';
