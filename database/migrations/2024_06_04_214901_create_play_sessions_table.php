@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreign('game_id')->references('id')->on('games');
             $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('is_active');
+            $table->boolean('is_paused');
             $table->text('notes')->nullable();
-            $table->integer('session_duration')->nullable();
+            $table->dateTime('start_session')->nullable();
+            $table->dateTime('end_session')->nullable();
             $table->timestamps();
         });
     }

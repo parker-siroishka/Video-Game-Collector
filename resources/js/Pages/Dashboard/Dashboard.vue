@@ -1,7 +1,7 @@
 <script>
 import { ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import CreateSession from './Partials/CreateSession.vue';
+import CreateSession from './CreateSession.vue'
 import AddNewGameModal from './Partials/AddNewGameModal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { Head } from '@inertiajs/vue3';

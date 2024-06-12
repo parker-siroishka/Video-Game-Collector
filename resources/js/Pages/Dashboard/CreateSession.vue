@@ -8,6 +8,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue'
 import Toggle from '@/Components/Toggle.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import PlaySessions from '@/Pages/Dashboard/Partials/PlaySessions.vue'
 
 export default {
     components: {
@@ -15,7 +16,8 @@ export default {
         SecondaryButton,
         Modal,
         Toggle,
-        AddNewGameForm
+        AddNewGameForm,
+        PlaySessions
     },
     setup() {
         const showingCreateSessionModal = ref(false);
@@ -86,22 +88,17 @@ export default {
 
 <template>
     <section class="space-y-6 mt-5">
-        <div class="w-full sm:w-fit flex items-center justify-content-around bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="w-full sm:w-fit flex items-center justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6">start</PrimaryButton>
         </div>
+        <PlaySessions />
 
         <Modal :show="showingCreateSessionModal" @close="onCancel">
             <div class="p-6">
                 <h2 class="text-lg font-extrabold text-gray-900">
                     Start a new game session
                 </h2>
-                <!-- 
-                    TODO: implement these components Components
-                    <PlaySessionsContainer>
-                        <PlaySession />
-                    </PlaySessionsContainer> 
-                -->
                 <div class="flex place-content-between">
                     <div class="sm:w-1/2">
                         <form class="max-w-sm mt-3">

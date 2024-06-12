@@ -15,6 +15,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                'border-color': 'border-animation 3s infinite',
+              },
+              keyframes: {
+                'border-animation': {
+                  '0%, 100%': { borderColor: 'rgba(239, 68, 68, 0.0)' }, // transparent
+                  '70%': { borderColor: 'rgba(239, 68, 68, 1.0)' }, // dark red
+                },
+              },
         },
     },
 
