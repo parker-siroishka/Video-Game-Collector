@@ -49,9 +49,11 @@ export default {
                     const response = await axios.post(route('playSessions.post'), {
                         game_id: sessionGame.id,
                         is_active: true,
+                        is_paused: false,
                         notes: null,
-                        session_duration: null
+                        start_session: new Date().toISOString()
                     });
+                    // Trigger playSessions.get on add
                     // Close modal on success
                     showingCreateSessionModal.value = false;
                 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +26,9 @@ class PlaySession extends Model
         'game_id',
         'user_id',
         'is_active',
-        'notes'
+        'is_paused',
+        'notes',
+        'start_session',
+        'end_session'
     ];
 }
