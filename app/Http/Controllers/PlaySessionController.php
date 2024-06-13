@@ -43,6 +43,26 @@ class PlaySessionController extends Controller
         return response()->json(['success' => 'PlaySession created successfully.'], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'is_active' => 'boolean',
+            'is_paused' => 'boolean',
+            'start_session' => 'date',
+            'end_session' => 'date',
+            'duration_milliseconds' => 'integer',
+            'duration_humanized' => 'string'
+        ]);
+
+        // Find the play session by id and update it with the validated data
+        $playSession = PlaySession::findOrFail($id);
+        $playSession->update($validatedData);
+
+        // Return a response, such as a redirect or a view
+        return response()->json(['success' => 'PlaySession patched successfully.'], 204);
+    }
+
     public function getUserPlaySessions(Request $request) 
     {
         $currentUserId = $request->user()->id;

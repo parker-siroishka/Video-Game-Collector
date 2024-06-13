@@ -29,6 +29,8 @@ class PlaySession extends Model
         'is_paused',
         'notes',
         'start_session',
-        'end_session'
+        'end_session',
+        'duration_milliseconds',
+        'duration_humanized'
     ];
 }
