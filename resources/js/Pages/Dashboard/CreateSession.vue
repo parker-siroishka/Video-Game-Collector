@@ -1,5 +1,5 @@
 <script>
-import { onUpdated, ref } from 'vue';
+import { onUpdated, onMounted, ref } from 'vue';
 import axios from "axios";
 
 import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
@@ -11,6 +11,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PlaySessions from '@/Pages/Dashboard/Partials/PlaySessions.vue'
 
 export default {
+    emits: ['update:updatePlaySessions'],
     components: {
         PrimaryButton,
         SecondaryButton,
@@ -25,6 +26,7 @@ export default {
         const hasGames = ref(false);
         const games = ref([]);
         const selectedGame = ref('');
+        const sessions = ref([]);
 
         const showCreateSessionModal = () => {
             showingCreateSessionModal.value = true;
@@ -34,8 +36,26 @@ export default {
         // GET and sort current games alphabetically
         const getGames = async () => {
             const { data } = await axios.get(route('games.get'));
-            games.value = data.sort((a, b) => a.title.localeCompare(b.title));;
+            games.value = data.sort((a, b) => a.title.localeCompare(b.title));
             hasGames.value = games.value.length > 0;
+        };
+
+        const getPlaySessions = async () => {
+            try {
+                const { data } = await axios.get(route('playSessions.get'));
+                sessions.value = data.sort((a, b) => {
+                // Compare `is_active` status first; true values will come before false
+                if (a.is_active && !b.is_active) {
+                    return -1;
+                }
+                if (!a.is_active && b.is_active) {
+                    return 1;
+                }
+                return new Date(b.created_at) - new Date(a.created_at);
+            });
+            } catch (error) {
+                console.error('Error fetching play sessions:', error);
+            }
         };
 
         const onCancel = () => {
@@ -56,6 +76,7 @@ export default {
                     // Trigger playSessions.get on add
                     // Close modal on success
                     showingCreateSessionModal.value = false;
+                    getPlaySessions();
                 
                 } catch (error) {
                     // Handle error
@@ -71,7 +92,12 @@ export default {
             selectedGame.value = '';
         };
 
-        onUpdated(() => getGames());
+        onUpdated(() => {
+            getGames();
+            // getPlaySessions();
+        });
+
+        onMounted(() => getPlaySessions());
 
         return {
             showCreateSessionModal,
@@ -82,7 +108,8 @@ export default {
             showingAddNewGameForm,
             hasGames,
             games,
-            selectedGame
+            selectedGame,
+            sessions
         };
     }
 }
@@ -94,7 +121,7 @@ export default {
             <div class="p-6 text-gray-900">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6">start</PrimaryButton>
         </div>
-        <PlaySessions />
+        <PlaySessions :sessions="sessions" />
 
         <Modal :show="showingCreateSessionModal" @close="onCancel">
             <div class="p-6">

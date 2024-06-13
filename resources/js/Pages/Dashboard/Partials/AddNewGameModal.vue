@@ -45,7 +45,7 @@ export default {
         };
 
         watch(() => props.showAddNewGameModal, newVal => {
-        show.value = newVal;
+            show.value = newVal;
         });
 
         return {

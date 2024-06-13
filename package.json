@@ -18,6 +18,8 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "vue-multiselect": "^3.0.0-beta.3"
+        "moment": "^2.30.1",
+        "vue-multiselect": "^3.0.0-beta.3",
+        "vue-timer-hook": "^1.0.84"
     }
 }

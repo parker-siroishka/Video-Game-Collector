@@ -21,12 +21,17 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             animation: {
-                'border-color': 'border-animation 3s infinite',
+                'border-color-red': 'border-animation-red 3s infinite',
+                'border-color-yellow': 'border-animation-yellow 3s infinite',
               },
               keyframes: {
-                'border-animation': {
+                'border-animation-red': {
                   '0%, 100%': { borderColor: 'rgba(239, 68, 68, 0.0)' }, // transparent
                   '70%': { borderColor: 'rgba(239, 68, 68, 1.0)' }, // dark red
+                },
+                'border-animation-yellow': {
+                  '0%, 100%': { borderColor: 'rgba(255, 205, 0, 0.0)' }, // transparent
+                  '70%': { borderColor: 'rgba(255, 205, 0, 1.0)' }, // yellow
                 },
               },
         },
