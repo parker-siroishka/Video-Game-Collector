@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\PlaySession;
@@ -45,22 +46,42 @@ class PlaySessionController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'is_active' => 'boolean',
-            'is_paused' => 'boolean',
-            'start_session' => 'date',
-            'end_session' => 'date',
-            'duration_milliseconds' => 'integer',
-            'duration_humanized' => 'string'
-        ]);
+        DB::beginTransaction();
 
-        // Find the play session by id and update it with the validated data
-        $playSession = PlaySession::findOrFail($id);
-        $playSession->update($validatedData);
+        try {
+                // Validate the request data
+            $validatedData = $request->validate([
+                'is_active' => 'boolean',
+                'is_paused' => 'boolean',
+                'start_session' => 'date',
+                'end_session' => 'date',
+                'duration_milliseconds' => 'integer',
+                'duration_humanized' => 'string'
+            ]);
 
-        // Return a response, such as a redirect or a view
-        return response()->json(['success' => 'PlaySession patched successfully.'], 204);
+            // Find the play session by id and current session's game.
+            // Add session duration to game's playtime
+            // update model with the validated data
+            $playSession = PlaySession::findOrFail($id);
+            $game = $playSession->game;
+            error_log($game);
+
+            $durationInHours = $validatedData['duration_milliseconds'] / 3600000;
+            error_log($durationInHours);
+            $game->playtime += $durationInHours;
+            error_log($game);
+
+            // Attempt to save the game and play session
+            $game->save();
+            $playSession->update($validatedData);
+
+            DB::commit();
+            return response()->json(['success' => 'PlaySession patched successfully.'], 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Handle the exception, log it, and return an error response
+            return response()->json(['error' => 'Update failed.'], 500);
+        }
     }
 
     public function getUserPlaySessions(Request $request) 

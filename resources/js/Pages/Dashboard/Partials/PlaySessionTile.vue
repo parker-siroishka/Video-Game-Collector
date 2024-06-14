@@ -39,6 +39,7 @@ export default {
                 pauseSession();
             } else { 
                 stopwatch.start();
+                playSession();
             };
         };
 
@@ -168,7 +169,7 @@ export default {
             <div class="flex">
                 <div class="text-right pr-3 sm:pr-10">
                     <p class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400">Playtime <strong>{{ playtime }}h</strong></p>
-                    <p v-if="estimatedPlaytime" class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400">Projected time <strong>105h</strong></p>
+                    <p v-if="estimatedPlaytime" class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400">Projected time <strong>{{ Math.round(estimatedPlaytime) }}h</strong></p>
                     <p v-if="gameConsole" class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400">Playing on <strong>{{ gameConsole }}</strong></p>
                 </div>
                 <div class="w-1/2 sm:w-auto">
