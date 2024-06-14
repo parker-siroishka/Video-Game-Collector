@@ -64,12 +64,9 @@ class PlaySessionController extends Controller
             // update model with the validated data
             $playSession = PlaySession::findOrFail($id);
             $game = $playSession->game;
-            error_log($game);
 
             $durationInHours = $validatedData['duration_milliseconds'] / 3600000;
-            error_log($durationInHours);
             $game->playtime += $durationInHours;
-            error_log($game);
 
             // Attempt to save the game and play session
             $game->save();
