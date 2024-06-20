@@ -7,6 +7,7 @@ import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import Toggle from '@/Components/Toggle.vue';
 import Modal from '@/Components/Modal.vue';
+import Header from '@/Components/Header.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PlaySessions from '@/Pages/Dashboard/Partials/PlaySessions.vue'
 
@@ -18,7 +19,8 @@ export default {
         Modal,
         Toggle,
         AddNewGameForm,
-        PlaySessions
+        PlaySessions,
+        Header
     },
     setup() {
         const showingCreateSessionModal = ref(false);
@@ -40,19 +42,25 @@ export default {
             hasGames.value = games.value.length > 0;
         };
 
-        const getPlaySessions = async () => {
+        const getGroupedPlaySessions = async () => {
             try {
-                const { data } = await axios.get(route('playSessions.get'));
-                sessions.value = data.sort((a, b) => {
-                // Compare `is_active` status first; true values will come before false
-                if (a.is_active && !b.is_active) {
-                    return -1;
+                const { data } = await axios.get(route('playSessionsGrouped.get'));
+                // Iterate over each group and sort the sessions
+                for (const [date, sessionsArray] of Object.entries(data)) {
+                    sessionsArray.sort((a, b) => {
+                        // Compare `is_active` status first; true values will come before false
+                        if (a.is_active && !b.is_active) {
+                            return -1;
+                        }
+                        if (!a.is_active && b.is_active) {
+                            return 1;
+                        }
+                        // If `is_active` status is the same, compare `created_at`
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    });
                 }
-                if (!a.is_active && b.is_active) {
-                    return 1;
-                }
-                return new Date(b.created_at) - new Date(a.created_at);
-            });
+                sessions.value = data;
+                console.log(sessions.value);
             } catch (error) {
                 console.error('Error fetching play sessions:', error);
             }
@@ -77,6 +85,7 @@ export default {
                     // Close modal on success
                     showingCreateSessionModal.value = false;
                     getPlaySessions();
+                    getGroupedPlaySessions();
                 
                 } catch (error) {
                     // Handle error
@@ -92,12 +101,9 @@ export default {
             selectedGame.value = '';
         };
 
-        onUpdated(() => {
-            getGames();
-            // getPlaySessions();
-        });
+        onUpdated(() => getGames());
 
-        onMounted(() => getPlaySessions());
+        onMounted(() => getGroupedPlaySessions());
 
         return {
             showCreateSessionModal,
@@ -120,6 +126,9 @@ export default {
         <div class="w-full sm:w-fit flex items-center justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6">start</PrimaryButton>
+        </div>
+        <div class="flex justify-center w-full">
+            <Header>Sessions</Header>
         </div>
         <PlaySessions :sessions="sessions" />
 

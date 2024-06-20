@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/playsessions', [PlaySessionController::class, 'store'])->name('playSessions.post');
     Route::get('/playsessions', [PlaySessionController::class, 'getUserPlaySessions'])->name('playSessions.get');
+    Route::get('/playsessionsgrouped', [PlaySessionController::class, 'getUserGroupedPlaySessions'])->name('playSessionsGrouped.get');
     Route::patch('/playsessions/{id}', [PlaySessionController::class, 'update'])->name('playSessions.patch');
 });
 
