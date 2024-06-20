@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="pr-3 pl-3">
         <div>
             <div v-for="(daySessions, date) in sessions" :key="date">
                 <div class="inline-flex items-center justify-center w-full mb-5">

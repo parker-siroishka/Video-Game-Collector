@@ -123,7 +123,7 @@ export default {
 
 <template>
     <section class="space-y-6 mt-5">
-        <div class="w-full sm:w-fit flex items-center justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="sm:w-fit ml-2 mr-2 flex items-center justify-between bg-white overflow-hidden shadow-sm rounded-lg">
             <div class="p-6 text-gray-900">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6">start</PrimaryButton>
         </div>
