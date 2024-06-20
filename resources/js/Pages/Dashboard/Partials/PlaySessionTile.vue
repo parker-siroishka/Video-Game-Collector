@@ -106,7 +106,18 @@ export default {
             sessionEndTime.value = endDateTime.format('YYYY-MM-DD HH:mm:ss');
 
             durationMilliseconds.value = endDateTime.diff(startDateTime);
-            durationHumanized.value = moment.duration(durationMilliseconds.value).humanize();
+            let duration = moment.duration(durationMilliseconds.value);
+            let hours = duration.hours();
+            let minutes = duration.minutes();
+            let seconds = duration.seconds();
+            let timeString = `${seconds}s`; // Seconds are always included
+
+            if (hours > 0) {
+                timeString = `${hours}h ${minutes}m` + timeString;
+            } else if (minutes > 0) {
+                timeString = `${minutes}m ` + timeString;
+            }
+            durationHumanized.value = timeString;
 
             stopSession();
         };
@@ -144,10 +155,10 @@ export default {
                 <div>
                     <p v-if="!sessionEndTime" class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400 mb-4">Current session <br class="sm:hidden"/>
                         <strong>
-                            <span >
+                            <span v-if="stopwatch.hours !== '0'" >
                                 {{stopwatch.hours}}h
                             </span>
-                            <span >
+                            <span v-if="stopwatch.minutes !== '0'" >
                                 {{stopwatch.minutes}}m
                             </span>
                             <span>
