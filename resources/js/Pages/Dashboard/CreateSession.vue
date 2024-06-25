@@ -60,7 +60,6 @@ export default {
                     });
                 }
                 sessions.value = data;
-                console.log(sessions.value);
             } catch (error) {
                 console.error('Error fetching play sessions:', error);
             }
@@ -84,7 +83,6 @@ export default {
                     // Trigger playSessions.get on add
                     // Close modal on success
                     showingCreateSessionModal.value = false;
-                    getPlaySessions();
                     getGroupedPlaySessions();
                 
                 } catch (error) {

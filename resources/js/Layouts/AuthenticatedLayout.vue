@@ -20,7 +20,7 @@ const showingNavigationDropdown = ref(false);
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                     <ApplicationLogo />
-                                <h2 class="font-semibold text-l text-gray-800 leading-tight pr-5">Game Collector</h2>
+                                <h2 class="font-semibold text-l text-gray-800 leading-tight pr-5">Game Vault</h2>
                             </div>
 
                             <!-- Navigation Links -->
