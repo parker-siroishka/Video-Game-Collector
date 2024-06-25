@@ -1,32 +1,17 @@
-<script>
+<script setup>
 import { ref } from 'vue';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import CreateSession from './CreateSession.vue'
-import AddNewGameModal from './Partials/AddNewGameModal.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { Head } from '@inertiajs/vue3';
 
-export default {
-    components: {
-        AuthenticatedLayout,
-        CreateSession,
-        PrimaryButton,
-        AddNewGameModal,
-        Head
-    },
-    setup() {
-        const showAddNewGameModal = ref(false);
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AddNewGameModal from '@/Pages/Dashboard/Partials/AddNewGameModal.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue'
+import CreateSession from './CreateSession.vue'
 
-        const addNewGameClicked = () => {
-            showAddNewGameModal.value = true;
-        };
+const showAddNewGameModal = ref(false);
 
-        return {
-            addNewGameClicked,
-            showAddNewGameModal
-        }
-    }
-}
+const addNewGameClicked = () => {
+    showAddNewGameModal.value = true;
+};
 
 </script>
 

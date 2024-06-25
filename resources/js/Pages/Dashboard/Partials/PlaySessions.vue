@@ -1,29 +1,21 @@
-<script>
+<script setup>
 import moment from 'moment';
+import { defineProps } from 'vue';
 import PlaySessionTile from '@/Pages/Dashboard/Partials/PlaySessionTile.vue';
 
-export default {
-    components: {
-    PlaySessionTile,
-    PlaySessionTile
-},
-    props: {
-        sessions: {
-            type: Object,
-            required: true
-        }
-    },
-    setup() {
-        const formatDate = (date) => {
-            return moment(date).format('MMMM Do, YYYY');
-        };
 
-        return {
-            PlaySessionTile,
-            formatDate
-        };
+const props = defineProps({
+    sessions: {
+        type: Object,
+        required: true
     }
-}
+});
+
+const formatDate = (date) => {
+    return moment(date).format('MMMM Do, YYYY');
+};
+
+
 </script>
 
 <template>

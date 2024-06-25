@@ -1,144 +1,120 @@
-<script>
-import { ref } from 'vue';
+<script setup>
+import moment from 'moment';
+import { ref, defineProps } from 'vue';
+import { useStopwatch } from 'vue-timer-hook';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useStopwatch } from 'vue-timer-hook';
-import moment from 'moment';
 
-export default {
-    components: {
-        DangerButton,
-        PrimaryButton
-    },
-    props: {
-        session: {
-            type: Object,
-            required: true
-        }
-    },
-    setup(props) {
-        const autoStart = true;
-        const stopwatch = useStopwatch(autoStart);
-
-        const gameTitle = ref(props.session.game.title);
-        const coverartUrl = ref(props.session.game.coverart);
-        const playtime = ref(props.session.game.playtime);
-        const estimatedPlaytime = ref(props.session.game.estimated_playtime);
-        const gameConsole = ref(props.session.game.console);
-        const isActive = ref(props.session.is_active);
-        const paused = ref(props.session.is_paused);
-        const sessionEndTime = ref(props.session.end_session);
-        const sessionStartTime = ref(props.session.start_session);
-        const durationMilliseconds = ref(props.session.duration_milliseconds);
-        const durationHumanized = ref(props.session.duration_humanized);
-
-        const pause = () => {
-            paused.value = !paused.value;
-            if (paused.value){
-                stopwatch.pause();
-                pauseSession();
-            } else { 
-                stopwatch.start();
-                playSession();
-            };
-        };
-
-        const getBorderColor = () => {
-            if (paused.value){
-                return 'animate-border-color-yellow';
-            } else if (isActive.value && !paused.value) {
-                return 'animate-border-color-red';
-            } else {
-                return '';
-            }
-        };
-
-        const pauseSession = async () => {
-            try {
-                const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), { is_paused: true });
-            } catch (error) {
-                // Handle error
-                console.error('Error patching session:', error);
-            }
-        };
-
-        const playSession = async () => {
-            try {
-                const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), { is_paused: false });
-            } catch (error) {
-                // Handle error
-                console.error('Error patching session:', error);
-            }
-        };
-
-        const stopSession = async () => {
-            const payload = {
-                is_active: false,
-                is_paused: false,
-                start_session: sessionStartTime.value,
-                end_session: sessionEndTime.value,
-                duration_milliseconds: durationMilliseconds.value,
-                duration_humanized: durationHumanized.value
-            };
-            try {
-                const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), payload);
-            } catch (error) {
-                // Handle error
-                console.error('Error patching session:', error);
-            }
-        };
-
-        const stop = () => {
-            const h = stopwatch.hours.value;
-            const m = stopwatch.minutes.value;
-            const s = stopwatch.seconds.value;
-            stopwatch.reset()
-            isActive.value = false;
-            // Parse the start date using Moment.js
-            let startDateTime = moment(sessionStartTime.value, 'YYYY-MM-DD HH:mm:ss');
-            
-            // Add hours, minutes, and seconds to the start date
-            let endDateTime = startDateTime.clone().add(h, 'hours')
-                                .add(m, 'minutes')
-                                .add(s, 'seconds');
-            
-            // Format the end date to match the desired format
-            sessionEndTime.value = endDateTime.format('YYYY-MM-DD HH:mm:ss');
-
-            durationMilliseconds.value = endDateTime.diff(startDateTime);
-            let duration = moment.duration(durationMilliseconds.value);
-            let hours = duration.hours();
-            let minutes = duration.minutes();
-            let seconds = duration.seconds();
-            let timeString = `${seconds}s`; // Seconds are always included
-
-            if (hours > 0) {
-                timeString = `${hours}h ${minutes}m` + timeString;
-            } else if (minutes > 0) {
-                timeString = `${minutes}m ` + timeString;
-            }
-            durationHumanized.value = timeString;
-
-            stopSession();
-        };
-
-        return {
-            gameTitle,
-            coverartUrl,
-            playtime,
-            estimatedPlaytime,
-            gameConsole,
-            isActive,
-            paused,
-            sessionEndTime,
-            stopwatch,
-            durationHumanized,
-            pause,
-            stop,
-            getBorderColor
-        };
+const props = defineProps({
+    session: {
+        type: Object,
+        required: true
     }
-}
+});
+const autoStart = true;
+const stopwatch = useStopwatch(autoStart);
+
+const gameTitle = ref(props.session.game.title);
+const coverartUrl = ref(props.session.game.coverart);
+const playtime = ref(props.session.game.playtime);
+const estimatedPlaytime = ref(props.session.game.estimated_playtime);
+const gameConsole = ref(props.session.game.console);
+const isActive = ref(props.session.is_active);
+const paused = ref(props.session.is_paused);
+const sessionEndTime = ref(props.session.end_session);
+const sessionStartTime = ref(props.session.start_session);
+const durationMilliseconds = ref(props.session.duration_milliseconds);
+const durationHumanized = ref(props.session.duration_humanized);
+
+const pause = () => {
+    paused.value = !paused.value;
+    if (paused.value){
+        stopwatch.pause();
+        pauseSession();
+    } else { 
+        stopwatch.start();
+        playSession();
+    };
+};
+
+const getBorderColor = () => {
+    if (paused.value){
+        return 'animate-border-color-yellow';
+    } else if (isActive.value && !paused.value) {
+        return 'animate-border-color-red';
+    } else {
+        return '';
+    }
+};
+
+const pauseSession = async () => {
+    try {
+        const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), { is_paused: true });
+    } catch (error) {
+        // Handle error
+        console.error('Error patching session:', error);
+    }
+};
+
+const playSession = async () => {
+    try {
+        const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), { is_paused: false });
+    } catch (error) {
+        // Handle error
+        console.error('Error patching session:', error);
+    }
+};
+
+const stopSession = async () => {
+    const payload = {
+        is_active: false,
+        is_paused: false,
+        start_session: sessionStartTime.value,
+        end_session: sessionEndTime.value,
+        duration_milliseconds: durationMilliseconds.value,
+        duration_humanized: durationHumanized.value
+    };
+    try {
+        const response = await axios.patch(route('playSessions.patch', { id: props.session.id }), payload);
+    } catch (error) {
+        // Handle error
+        console.error('Error patching session:', error);
+    }
+};
+
+const stop = () => {
+    const h = stopwatch.hours.value;
+    const m = stopwatch.minutes.value;
+    const s = stopwatch.seconds.value;
+    stopwatch.reset()
+    isActive.value = false;
+    // Parse the start date using Moment.js
+    let startDateTime = moment(sessionStartTime.value, 'YYYY-MM-DD HH:mm:ss');
+    
+    // Add hours, minutes, and seconds to the start date
+    let endDateTime = startDateTime.clone().add(h, 'hours')
+                        .add(m, 'minutes')
+                        .add(s, 'seconds');
+    
+    // Format the end date to match the desired format
+    sessionEndTime.value = endDateTime.format('YYYY-MM-DD HH:mm:ss');
+
+    durationMilliseconds.value = endDateTime.diff(startDateTime);
+    let duration = moment.duration(durationMilliseconds.value);
+    let hours = duration.hours();
+    let minutes = duration.minutes();
+    let seconds = duration.seconds();
+    let timeString = `${seconds}s`; // Seconds are always included
+
+    if (hours > 0) {
+        timeString = `${hours}h ${minutes}m` + timeString;
+    } else if (minutes > 0) {
+        timeString = `${minutes}m ` + timeString;
+    }
+    durationHumanized.value = timeString;
+
+    stopSession();
+};
 </script>
 
 <template>

@@ -1,8 +1,8 @@
-<script>
-import { watch, ref, computed, onMounted } from 'vue';
+<script setup>
 import Multiselect from 'vue-multiselect'
 import axios from "axios";
 import { useForm } from '@inertiajs/vue3';
+import { watch, ref, computed, onMounted, defineProps } from 'vue';
 
 import { COVER_ART_PLACEHOLDER } from '@/Constants/urls';
 
@@ -12,92 +12,70 @@ import InputLabel from '@/Components/InputLabel.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 
-import { isValidUrl } from '../../../Utils/urlUtils';
+import { isValidUrl } from '@/Utils/urlUtils';
 
-export default {
-  components: {
-    TextInput,
-    NumberInput,
-    InputLabel,
-    PrimaryButton,
-    SecondaryButton,
-    Multiselect
+const props = defineProps({
+  onSubmit: {
+    type: Function,
+    required: true
   },
-  props: {
-    onSubmit: {
-      type: Function,
-      required: true
-    },
-    onCancel: {
-      type: Function,
-      required: true
-    },
-    submitLabel: {
-      type: String,
-      required: false
-    },
+  onCancel: {
+    type: Function,
+    required: true
   },
-  setup(props) {
-    const newGameCoverArt = ref(null);
-    const consoles = ref([]);
-    const typed = ref('');
+  submitLabel: {
+    type: String,
+    required: false
+  },
+});
 
-    const addNewGameForm = useForm({
-      title: '',
-      thumbnailUrl: '',
-      playtime: 0,
-      estimatedPlaytime: 0,
-      console: ''
-    });
+const newGameCoverArt = ref(null);
+const consoles = ref([]);
+const typed = ref('');
 
-    const thumbnailUrl = computed({
-      get: () => addNewGameForm.thumbnailUrl,
-      set: (value) => addNewGameForm.thumbnailUrl = value,
-    });
+const addNewGameForm = useForm({
+  title: '',
+  thumbnailUrl: '',
+  playtime: 0,
+  estimatedPlaytime: 0,
+  console: ''
+});
 
-    const onSubmitClick = () => {
-      props.onSubmit(addNewGameForm);
-    };
+const thumbnailUrl = computed({
+  get: () => addNewGameForm.thumbnailUrl,
+  set: (value) => addNewGameForm.thumbnailUrl = value,
+});
 
-    const onCancelClick = () => {
-      props.onCancel();
-    };
+const onSubmitClick = () => {
+  props.onSubmit(addNewGameForm);
+};
 
-    // GET and sort current consoles alphabetically
-    const getUniqueConsoles = async () => {
-      const { data } = await axios.get(route('games.getUniqueConsoles'));
-      consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
-    };
+const onCancelClick = () => {
+  props.onCancel();
+};
 
-    const addConsole = () => {
-      if (!consoles.value.includes(typed.value)) consoles.value.push({ console: typed.value });
-      addNewGameForm.console = typed.value;
-    }
+const getUniqueConsoles = async () => {
+  const { data } = await axios.get(route('games.getUniqueConsoles'));
+  consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
+};
 
-    watch(thumbnailUrl, async (newUrl, oldUrl) => {
-      if (newUrl) {
-        if (await isValidUrl(newUrl)) {
-          newGameCoverArt.value.src = newUrl;
-        } else {
-          newGameCoverArt.value.src = COVER_ART_PLACEHOLDER;
-        }
-      }
-    }, { immediate: true });
-
-    onMounted(() => getUniqueConsoles());
-
-    return {
-      addNewGameForm,
-      thumbnailUrl,
-      newGameCoverArt,
-      onCancelClick,
-      onSubmitClick,
-      consoles,
-      addConsole,
-      typed
-    };
-  }
+const addConsole = () => {
+  if (!consoles.value.includes(typed.value)) consoles.value.push({ console: typed.value });
+  addNewGameForm.console = typed.value;
 }
+
+watch(thumbnailUrl, async (newUrl, oldUrl) => {
+  if (newUrl) {
+    if (await isValidUrl(newUrl)) {
+      newGameCoverArt.value.src = newUrl;
+    } else {
+      newGameCoverArt.value.src = COVER_ART_PLACEHOLDER;
+    }
+  }
+}, { immediate: true });
+
+onMounted(() => getUniqueConsoles());
+
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
@@ -153,7 +131,7 @@ export default {
     />
     </form>
     <div class="mt-6 flex justify-end">
-      <SecondaryButton @click="onCancel"> Cancel </SecondaryButton>
+      <SecondaryButton @click="onCancelClick"> Cancel </SecondaryButton>
       <PrimaryButton
           class="ms-3"
           :class="{ 'opacity-25': addNewGameForm.processing }"

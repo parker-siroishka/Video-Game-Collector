@@ -1,11 +1,7 @@
-<script>
+<script setup>
 import { Link } from '@inertiajs/vue3';
-
-export default {
-    components: { Link }
-}
-
 </script>
+
 <template>
     <Link :href="route('dashboard')">
         <img src="../../../resources/assets/images/game-controller.png" 

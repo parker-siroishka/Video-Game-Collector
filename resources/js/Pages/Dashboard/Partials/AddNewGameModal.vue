@@ -1,61 +1,49 @@
-<script>
-import { ref, watch } from 'vue';
+<script setup>
 import axios from "axios";
+import { ref, watch, defineEmits, defineProps } from 'vue';
 
 import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
 import Modal from '@/Components/Modal.vue';
 
-export default {
-    emits: ['update:showAddNewGameModal'],
-    components: {
-        AddNewGameForm,
-        Modal
-    },
-    props: {
-        showAddNewGameModal: {
-            type: Boolean
-        }
-    },
-    setup(props, { emit }) {
+const emit = defineEmits(['update:showAddNewGameModal']);
 
-        const show = ref(false);
-
-        const onCancel = () => {
-            show.value = false;
-            emit('update:showAddNewGameModal', false);
-        };
-
-        const onSubmit = async (form) => {
-            try {
-                const response = await axios.post(route('games.post'), {
-                    title: form.title,
-                    coverart: form.thumbnailUrl,
-                    playtime: form.playtime,
-                    estimatedPlaytime: form.estimatedPlaytime,
-                    console: form.console.console
-                });
-                // Close modal on success
-                show.value = false;
-                emit('update:showAddNewGameModal', false);
-                
-            } catch (error) {
-                // Handle error
-                console.error('Error submitting game:', error);
-            }
-        };
-
-        watch(() => props.showAddNewGameModal, newVal => {
-            show.value = newVal;
-        });
-
-        return {
-            onCancel,
-            onSubmit,
-            show
-        }
+const props = defineProps({
+    showAddNewGameModal: {
+        type: Boolean
     }
-}
+});
+
+const show = ref(false);
+
+const onCancel = () => {
+    show.value = false;
+    emit('update:showAddNewGameModal', false);
+};
+
+const onSubmit = async (form) => {
+    try {
+        const response = await axios.post(route('games.post'), {
+            title: form.title,
+            coverart: form.thumbnailUrl,
+            playtime: form.playtime,
+            estimatedPlaytime: form.estimatedPlaytime,
+            console: form.console.console
+        });
+        // Close modal on success
+        show.value = false;
+        emit('update:showAddNewGameModal', false);
+        
+    } catch (error) {
+        // Handle error
+        console.error('Error submitting game:', error);
+    }
+};
+
+watch(() => props.showAddNewGameModal, newVal => {
+    show.value = newVal;
+});
 </script>
+
 <template>
     <div>
         <Modal :show="show" @close="onCancel">
@@ -70,4 +58,4 @@ export default {
             </div>
         </Modal>
     </div>
-  </template>
+</template>
