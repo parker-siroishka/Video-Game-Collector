@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch, defineProps } from 'vue';
 
 import AddNewGameForm from '@/Pages/Dashboard/Partials/AddNewGameForm.vue';
 import Modal from '@/Components/Modal.vue';
