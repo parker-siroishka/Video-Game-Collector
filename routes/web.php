@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/playsessions', [PlaySessionController::class, 'store'])->name('playSessions.post');
     Route::get('/playsessions', [PlaySessionController::class, 'getUserPlaySessions'])->name('playSessions.get');
     Route::get('/playsessionsgrouped', [PlaySessionController::class, 'getUserGroupedPlaySessions'])->name('playSessionsGrouped.get');
+    Route::get('/playsessions/weeklyTotals', [PlaySessionController::class, 'getTotalSessionTimeByWeek'])->name('playSessionsWeeklyTotals.get');
     Route::patch('/playsessions/{id}', [PlaySessionController::class, 'update'])->name('playSessions.patch');
 });
 

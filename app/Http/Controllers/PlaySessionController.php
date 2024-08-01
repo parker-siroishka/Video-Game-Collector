@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\PlaySession;
@@ -100,6 +101,28 @@ class PlaySessionController extends Controller
                                     ->get();
 
         return response()->json( $playSessions );
+    }
+
+    public function getTotalSessionTimeByWeek(Request $request)
+    {
+        $currentUserId = $request->user()->id;
+        
+        $playSessions = PlaySession::with('game')
+                                    ->where('user_id', $currentUserId)
+                                    ->get();
+
+        $groupedByWeek = $playSessions->groupBy(function($session) {
+            return Carbon::parse($session->start_session)->startOfWeek()->format('Y-m-d');
+        });
+
+        // Sum durations and convert to hours
+        $weeklyDurations = $groupedByWeek->map(function($weekSessions) {
+            $totalMilliseconds = $weekSessions->sum('duration_milliseconds');
+            $hours = $totalMilliseconds / (1000 * 60 * 60);
+            return round($hours, 2);
+        });
+
+        return $weeklyDurations;
     }
 
     public function getUserGroupedPlaySessions(Request $request)
