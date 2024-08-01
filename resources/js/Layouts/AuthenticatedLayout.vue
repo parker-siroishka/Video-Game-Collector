@@ -23,7 +23,7 @@ const showingNavigationDropdown = ref(false);
                                 <h2
                                     class="font-semibold text-l text-gray-800 leading-tight pr-5"
                                 >
-                                    Game Vault
+                                    Game Session Logger
                                 </h2>
                             </div>
 
@@ -37,11 +37,14 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('dashboard')">
-                                    Collection
+                                <NavLink
+                                    :href="route('stats')"
+                                    :active="route().current('stats')"
+                                >
+                                    Statistics
                                 </NavLink>
                                 <NavLink :href="route('dashboard')">
-                                    Statistics
+                                    Collection
                                 </NavLink>
                             </div>
                         </div>
