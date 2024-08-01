@@ -83,6 +83,9 @@ onMounted(() => getUniqueConsoles());
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+<style>
+@import "../../../../../resources/css/multiselect.css";
+</style>
 
 <template>
     <form>
