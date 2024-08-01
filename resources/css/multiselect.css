@@ -1,0 +1,20 @@
+.multiselect__option--highlight {
+    background: rgb(89, 91, 96);
+    color: white;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+    background: rgb(130, 130, 130);
+}
+
+.multiselect__option--selected {
+    background: rgb(183, 183, 183);
+}
+
+.multiselect__option--selected::after {
+    color: rgb(78, 78, 78);
+}
+
+.multiselect__option--highlight::after {
+    background: rgb(31, 41, 55);
+}

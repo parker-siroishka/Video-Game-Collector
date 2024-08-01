@@ -95,8 +95,11 @@ onMounted(() => getGroupedPlaySessions());
                 >start</PrimaryButton
             >
         </div>
-        <div class="flex justify-center w-full">
+        <div class="flex flex-col items-center">
             <Header>Sessions</Header>
+            <h2 v-if="sessions.length == 0" class="block mt-20 text-gray-500">
+                No sessions logged
+            </h2>
         </div>
         <PlaySessions :sessions="sessions" />
 
