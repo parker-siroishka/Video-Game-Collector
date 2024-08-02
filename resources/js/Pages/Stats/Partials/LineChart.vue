@@ -44,7 +44,7 @@ export default defineComponent({
                     enabled: false,
                 },
                 stroke: {
-                    curve: "straight",
+                    curve: "smooth",
                 },
                 title: {
                     text: props.title,
@@ -73,7 +73,6 @@ export default defineComponent({
 <style scoped>
 .chart {
     padding: 0.5rem;
-    background: #f1f1f1;
     flex: 1;
 }
 </style>

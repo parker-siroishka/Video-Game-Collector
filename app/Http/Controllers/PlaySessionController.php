@@ -105,11 +105,35 @@ class PlaySessionController extends Controller
 
     public function getTotalSessionTimeByWeek(Request $request)
     {
+        // Define default rules
+        $rules = [
+            'game_id' => 'integer',
+        ];
+
+        // Validate the request data
+        $validatedData = $request->validate($rules);
+
         $currentUserId = $request->user()->id;
-        
-        $playSessions = PlaySession::with('game')
-                                    ->where('user_id', $currentUserId)
-                                    ->get();
+
+        // Check if 'game_id' is present and is -1, which gets all sessions of all games
+        if (isset($validatedData['game_id']) && $validatedData['game_id'] == -1) {
+            $playSessions = PlaySession::with('game')
+            ->where('user_id', $currentUserId)
+            ->get();
+        } else {
+            // otherwise we query the sessions of the provided game
+            // Ensure 'game_id' is present in the request
+            if (!isset($validatedData['game_id'])) {
+                // Handle the case where 'game_id' is not provided
+            }
+
+            $playSessions = PlaySession::with('game')
+            ->where([
+                ['user_id', '=', $currentUserId],
+                ['game_id', '=', $validatedData['game_id']]
+            ])
+            ->get();
+        }
 
         $groupedByWeek = $playSessions->groupBy(function($session) {
             return Carbon::parse($session->start_session)->startOfWeek()->format('Y-m-d');
