@@ -29,16 +29,6 @@ const sessionStartTime = ref(props.session.start_session);
 const durationMilliseconds = ref(props.session.duration_milliseconds);
 const durationHumanized = ref(props.session.duration_humanized);
 
-// if(isActive.value) {
-//         let start = moment(sessionStartTime);
-
-//         let now = moment(new Date().toISOString());
-//         console.log(sessionStartTime, now);
-//         let duration = moment.duration(now.diff(start));
-//         console.log(duration);
-//         stopwatch = useStopwatch(duration, true);
-// }
-
 const pause = () => {
     paused.value = !paused.value;
     if (paused.value) {
@@ -164,209 +154,237 @@ const onClickNotesSubmit = async () => {
 <template>
     <div
         :class="getBorderColor()"
-        class="block p-3 sm:p-6 mb-5 bg-white border-2 sm:rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+        class="blocksm:p-6 border-2 border-white-100 mb-5 bg-white sm:rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
-        <div class="flex justify-between">
-            <h5
-                class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-            >
-                {{ gameTitle }}
-            </h5>
-            <span v-if="isActive" class="flex align-middle">
-                <img
-                    v-if="!paused && isActive"
-                    class="h-5 w-5 mr-2"
-                    src="../../../../assets/images/live.png"
-                />
-                <strong
-                    :class="paused ? 'text-yellow-500' : 'text-red-500'"
-                    class="hidden sm:block"
-                >
-                    <span v-if="paused">Paused</span
-                    ><span v-if="!paused">Active</span> Session</strong
-                ></span
-            >
+        <div
+            class="relative flex justify-center sm:hidden block w-full max-h-54 overflow-hidden"
+        >
+            <img
+                class="h-[176px] w-auto object-contain z-10 shadow-lg shadow-gray-700"
+                :src="coverartUrl"
+            />
+            <img
+                class="w-full absolute max-h-44 object-cover blur-md opacity-90"
+                :src="coverartUrl"
+            />
         </div>
-        <div class="flex justify-between w-100%">
-            <div class="sm:w-3/4">
-                <div class="flex flex-col justify-between sm:w-auto">
-                    <div>
-                        <p
-                            v-if="!sessionEndTime"
-                            class="text-s sm:text-lg font-normal text-gray-700 dark:text-gray-400 mb-4"
-                        >
-                            Current session <br class="sm:hidden" />
-                            <strong>
-                                <span v-if="stopwatch.hours !== '0'">
-                                    {{ stopwatch.hours }}h
-                                </span>
-                                <span v-if="stopwatch.minutes !== '0'">
-                                    {{ stopwatch.minutes }}m
-                                </span>
-                                <span> {{ stopwatch.seconds }}s </span>
-                            </strong>
-                        </p>
-                        <p
-                            v-if="sessionEndTime"
-                            class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400 mb-4"
-                        >
-                            Duration <strong>{{ durationHumanized }}</strong>
-                        </p>
-                        <div class="hidden sm:block">
-                            <label
-                                v-if="notes == null"
-                                @click="onClickNotes"
-                                for="message"
-                                class="opacity-50 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >Notes</label
+        <div class="pt-3 pb-4 px-7">
+            <div class="flex justify-between">
+                <h5
+                    class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {{ gameTitle }}
+                </h5>
+                <span v-if="isActive" class="flex align-middle">
+                    <img
+                        v-if="!paused && isActive"
+                        class="h-5 w-5 mr-2"
+                        src="../../../../assets/images/live.png"
+                    />
+                    <strong
+                        :class="paused ? 'text-yellow-500' : 'text-red-500'"
+                        class="hidden sm:block"
+                    >
+                        <span v-if="paused">Paused</span
+                        ><span v-if="!paused">Active</span> Session</strong
+                    ></span
+                >
+            </div>
+            <div class="flex justify-between w-100%">
+                <div class="w-full sm:w-3/4">
+                    <div class="flex flex-col justify-between sm:w-auto">
+                        <div class="w-100">
+                            <p
+                                v-if="!sessionEndTime"
+                                class="text-s sm:text-lg font-normal text-gray-700 dark:text-gray-400 mb-4"
                             >
-                            <div>
-                                <div v-if="notesOpen">
-                                    <textarea
-                                        v-model="notes"
-                                        id="message"
-                                        rows="4"
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Write your thoughts here..."
+                                Current session <br class="sm:hidden" />
+                                <strong>
+                                    <span v-if="stopwatch.hours !== '0'">
+                                        {{ stopwatch.hours }}h
+                                    </span>
+                                    <span v-if="stopwatch.minutes !== '0'">
+                                        {{ stopwatch.minutes }}m
+                                    </span>
+                                    <span> {{ stopwatch.seconds }}s </span>
+                                </strong>
+                            </p>
+                            <p
+                                v-if="sessionEndTime"
+                                class="text-xs sm:text-lg font-bold text-gray-700 dark:text-gray-400 mb-3"
+                            >
+                                Duration
+                                <strong>{{ durationHumanized }}</strong>
+                            </p>
+                            <div class="flex justify-normal sm:block">
+                                <p
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                >
+                                    Playtime <strong>{{ playtime }}h</strong>
+                                </p>
+                                <p
+                                    v-if="estimatedPlaytime"
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                >
+                                    Projected time
+                                    <strong
+                                        >{{
+                                            Math.round(estimatedPlaytime)
+                                        }}h</strong
+                                    >
+                                </p>
+                                <p
+                                    v-if="gameConsole"
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                >
+                                    Playing on
+                                    <strong>{{ gameConsole }}</strong>
+                                </p>
+                            </div>
+                            <div class="hidden sm:block">
+                                <label
+                                    v-if="notes == null"
+                                    @click="onClickNotes"
+                                    for="message"
+                                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white"
+                                    >Notes</label
+                                >
+                                <div>
+                                    <div v-if="notesOpen">
+                                        <textarea
+                                            v-model="notes"
+                                            id="message"
+                                            rows="4"
+                                            class="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Write your thoughts her..."
+                                        >
+                                            {{ notes }}
+                                        </textarea>
+                                        <div class="flex items-center mt-3">
+                                            <button
+                                                class="w-5 h-5 mr-5"
+                                                @click="onClickNotesSubmit"
+                                            >
+                                                <img
+                                                    src="../../../../assets//images/check.png"
+                                                />
+                                            </button>
+                                            <button
+                                                class="w-3.5 h-3.5"
+                                                @click="onClickNotesClose"
+                                            >
+                                                <img
+                                                    src="../../../../assets//images/close.png"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p
+                                        v-if="!notesOpen"
+                                        class="whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white line-clamp-3 mt-6 mb-4"
+                                        @click="onClickNotes"
                                     >
                                         {{ notes }}
-                                    </textarea>
-                                    <div class="flex items-center pt-3">
-                                        <button
-                                            class="w-5 h-5 mr-5"
-                                            @click="onClickNotesSubmit"
-                                        >
+                                    </p>
+                                    <div
+                                        v-if="!sessionEndTime"
+                                        class="inline-block mt-5"
+                                    >
+                                        <DangerButton @click="stop" class="mr-4"
+                                            ><img
+                                                src="../../../../assets/images/stop-button.png"
+                                                class="w-4 h-4"
+                                        /></DangerButton>
+                                        <PrimaryButton @click="pause">
                                             <img
-                                                src="../../../../assets//images/check.png"
+                                                src="../../../../assets/images/pause.png"
+                                                v-if="!paused"
+                                                class="w-4 h-4"
                                             />
-                                        </button>
-                                        <button
-                                            class="w-3.5 h-3.5"
-                                            @click="onClickNotesClose"
-                                        >
                                             <img
-                                                src="../../../../assets//images/close.png"
+                                                src="../../../../assets/images/play.png"
+                                                v-if="paused"
+                                                class="w-4 h-4"
                                             />
-                                        </button>
+                                        </PrimaryButton>
                                     </div>
-                                </div>
-                                <p
-                                    v-if="!notesOpen"
-                                    class="whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white"
-                                    @click="onClickNotes"
-                                >
-                                    {{ notes }}
-                                </p>
-                                <div
-                                    v-if="!sessionEndTime"
-                                    class="inline-block mt-5"
-                                >
-                                    <DangerButton @click="stop" class="mr-4"
-                                        ><img
-                                            src="../../../../assets/images/stop-button.png"
-                                            class="w-4 h-4"
-                                    /></DangerButton>
-                                    <PrimaryButton @click="pause">
-                                        <img
-                                            src="../../../../assets/images/pause.png"
-                                            v-if="!paused"
-                                            class="w-4 h-4"
-                                        />
-                                        <img
-                                            src="../../../../assets/images/play.png"
-                                            v-if="paused"
-                                            class="w-4 h-4"
-                                        />
-                                    </PrimaryButton>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex">
-                <div class="text-right pr-3 sm:pr-10">
-                    <p
-                        class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400"
-                    >
-                        Playtime <strong>{{ playtime }}h</strong>
-                    </p>
-                    <p
-                        v-if="estimatedPlaytime"
-                        class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400"
-                    >
-                        Projected time
-                        <strong>{{ Math.round(estimatedPlaytime) }}h</strong>
-                    </p>
-                    <p
-                        v-if="gameConsole"
-                        class="text-xs sm:text-lg font-normal text-gray-700 dark:text-gray-400"
-                    >
-                        Playing on <strong>{{ gameConsole }}</strong>
-                    </p>
-                </div>
-                <div class="sm:w-auto">
-                    <img
-                        :src="coverartUrl"
-                        class="class=shadow-lg shadow-gray-400 object-center object-cover h-28 w-auto rounded-sm sm:h-36 sm:w-24"
-                    />
-                </div>
-            </div>
-        </div>
-        <div class="sm:hidden">
-            <label
-                v-if="notes == null"
-                @click="onClickNotes"
-                for="message"
-                class="opacity-50 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Notes</label
-            >
-            <div>
-                <div v-if="notesOpen">
-                    <textarea
-                        id="message"
-                        rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Write your thoughts here..."
-                        >{{ notes }}</textarea
-                    >
-                    <div class="flex items-center pt-3">
-                        <button
-                            class="w-5 h-5 mr-5"
-                            @click="onClickNotesSubmit"
-                        >
-                            <img src="../../../../assets//images/check.png" />
-                        </button>
-                        <button class="w-3.5 h-3.5" @click="onClickNotesClose">
-                            <img src="../../../../assets//images/close.png" />
-                        </button>
+                <div class="flex">
+                    <div class="hidden sm:block sm:w-auto">
+                        <img
+                            :src="coverartUrl"
+                            class="class=shadow-lg shadow-gray-400 object-center object-cover h-28 w-auto rounded-sm sm:h-36 sm:w-24"
+                        />
                     </div>
                 </div>
-                <p
-                    v-if="!notesOpen"
-                    class="mt-5 whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white"
+            </div>
+            <div class="sm:hidden">
+                <label
+                    v-if="notes == null"
                     @click="onClickNotes"
+                    for="message"
+                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white"
+                    >Notes</label
                 >
-                    {{ notes }}
-                </p>
-                <div v-if="!sessionEndTime" class="inline-block mt-5">
-                    <DangerButton @click="stop" class="mr-4"
-                        ><img
-                            src="../../../../assets/images/stop-button.png"
-                            class="w-4 h-4"
-                    /></DangerButton>
-                    <PrimaryButton @click="pause">
-                        <img
-                            src="../../../../assets/images/pause.png"
-                            v-if="!paused"
-                            class="w-4 h-4"
-                        />
-                        <img
-                            src="../../../../assets/images/play.png"
-                            v-if="paused"
-                            class="w-4 h-4"
-                        />
-                    </PrimaryButton>
+                <div>
+                    <div v-if="notesOpen">
+                        <textarea
+                            v-model="notes"
+                            id="message"
+                            rows="4"
+                            class="block p-2.5 w-full mt-3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Write your thoughts here..."
+                            >{{ notes }}</textarea
+                        >
+                        <div class="flex items-center pt-3">
+                            <button
+                                class="w-5 h-5 mr-5"
+                                @click="onClickNotesSubmit"
+                            >
+                                <img
+                                    src="../../../../assets//images/check.png"
+                                />
+                            </button>
+                            <button
+                                class="w-3.5 h-3.5"
+                                @click="onClickNotesClose"
+                            >
+                                <img
+                                    src="../../../../assets//images/close.png"
+                                />
+                            </button>
+                        </div>
+                    </div>
+                    <p
+                        v-if="!notesOpen"
+                        class="mt-4 whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white line-clamp-3"
+                        @click="onClickNotes"
+                    >
+                        {{ notes }}
+                    </p>
+                    <div v-if="!sessionEndTime" class="inline-block mt-5">
+                        <DangerButton @click="stop" class="mr-4"
+                            ><img
+                                src="../../../../assets/images/stop-button.png"
+                                class="w-4 h-4"
+                        /></DangerButton>
+                        <PrimaryButton @click="pause">
+                            <img
+                                src="../../../../assets/images/pause.png"
+                                v-if="!paused"
+                                class="w-4 h-4"
+                            />
+                            <img
+                                src="../../../../assets/images/play.png"
+                                v-if="paused"
+                                class="w-4 h-4"
+                            />
+                        </PrimaryButton>
+                    </div>
                 </div>
             </div>
         </div>

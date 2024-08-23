@@ -23,7 +23,7 @@ const addNewGameClicked = () => {
                 <CreateSession />
             </div>
         </div>
-        <div class="fixed bottom-8 right-8">
+        <div class="fixed bottom-8 right-8 z-20">
             <div class="flex items-center">
                 <PrimaryButton @click="addNewGameClicked">
                     <img
