@@ -1,6 +1,5 @@
 <script setup>
 import Multiselect from "vue-multiselect";
-import axios from "axios";
 import { useForm } from "@inertiajs/vue3";
 import { watch, ref, computed, onMounted, defineProps } from "vue";
 
@@ -11,6 +10,8 @@ import NumberInput from "@/Components/NumberInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+
+import getUniqueConsoles from "@/services/getUniqueConsoles";
 
 import { isValidUrl } from "@/Utils/urlUtils";
 
@@ -54,9 +55,8 @@ const onCancelClick = () => {
     props.onCancel();
 };
 
-const getUniqueConsoles = async () => {
-    const { data } = await axios.get(route("games.getUniqueConsoles"));
-    consoles.value = data.sort((a, b) => a.console.localeCompare(b.console));
+const fetchGetUniqueConsoles = async () => {
+    consoles.value = await getUniqueConsoles();
 };
 
 const addConsole = () => {
@@ -79,7 +79,7 @@ watch(
     { immediate: true }
 );
 
-onMounted(() => getUniqueConsoles());
+onMounted(() => fetchGetUniqueConsoles());
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -1,9 +1,10 @@
 <script setup>
-import axios from "axios";
 import { onMounted, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+import getWeeklyPlaytimeTotals from "@/services/getWeeklyPlaytimeTotals";
 import LineChart from "./Partials/LineChart.vue";
 
 const weeklyTotals = ref([]);
@@ -11,11 +12,7 @@ const xAxisValues = ref([]);
 const selectedGame = ref("");
 
 const getWeeklyTotals = async (gameId) => {
-    const { data } = await axios.get(route("playSessionsWeeklyTotals.get"), {
-        params: {
-            game_id: gameId,
-        },
-    });
+    const { data } = getWeeklyPlaytimeTotals(gameId);
     const sortedArrayOfWeeklyTotals = Object.entries(data).sort(
         (a, b) => new Date(a[0]) - new Date(b[0])
     );

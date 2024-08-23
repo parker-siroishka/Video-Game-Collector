@@ -1,9 +1,10 @@
 <script setup>
-import axios from "axios";
 import { ref, watch, defineProps } from "vue";
 
 import AddNewGameForm from "@/Pages/Dashboard/Partials/AddNewGameForm.vue";
 import Modal from "@/Components/Modal.vue";
+
+import postGames from "@/services/postGames";
 
 const emit = defineEmits(["update:showAddNewGameModal"]);
 
@@ -22,18 +23,11 @@ const onCancel = () => {
 
 const onSubmit = async (form) => {
     try {
-        const response = await axios.post(route("games.post"), {
-            title: form.title,
-            coverart: form.thumbnailUrl,
-            playtime: form.playtime,
-            estimatedPlaytime: form.estimatedPlaytime,
-            console: form.console.console,
-        });
+        postGames(form);
         // Close modal on success
         show.value = false;
         emit("update:showAddNewGameModal", false);
     } catch (error) {
-        // Handle error
         console.error("Error submitting game:", error);
     }
 };

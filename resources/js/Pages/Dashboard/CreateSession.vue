@@ -1,5 +1,4 @@
 <script setup>
-import axios from "axios";
 import { onUpdated, onMounted, ref } from "vue";
 
 import AddNewGameForm from "@/Pages/Dashboard/Partials/AddNewGameForm.vue";
@@ -10,6 +9,10 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Toggle from "@/Components/Toggle.vue";
 import Modal from "@/Components/Modal.vue";
 import Header from "@/Components/Header.vue";
+
+import getGames from "@/services/getGames";
+import getGroupedPlaySessions from "@/services/getGroupedPlaySessions";
+import postPlaySessions from "@/services/postPlaySessions";
 
 const showingCreateSessionModal = ref(false);
 const showingAddNewGameForm = ref(false);
@@ -23,31 +26,13 @@ const showCreateSessionModal = () => {
     showingAddNewGameForm.value = false;
 };
 
-const getGames = async () => {
-    const { data } = await axios.get(route("games.get"));
-    games.value = data.sort((a, b) => a.title.localeCompare(b.title));
+const fetchGames = async () => {
+    games.value = await getGames();
     hasGames.value = games.value.length > 0;
 };
 
-const getGroupedPlaySessions = async () => {
-    try {
-        const { data } = await axios.get(route("playSessionsGrouped.get"));
-        for (const [date, sessionsArray] of Object.entries(data)) {
-            sessionsArray.sort((a, b) => {
-                if (a.is_active && !b.is_active) {
-                    return -1;
-                }
-                if (!a.is_active && b.is_active) {
-                    return 1;
-                }
-                // If `is_active` status is the same, compare `created_at`
-                return new Date(b.created_at) - new Date(a.created_at);
-            });
-        }
-        sessions.value = data;
-    } catch (error) {
-        console.error("Error fetching play sessions:", error);
-    }
+const fetchGroupedPlaySessions = async () => {
+    sessions.value = await getGroupedPlaySessions();
 };
 
 const onCancel = () => {
@@ -56,20 +41,7 @@ const onCancel = () => {
 
 const onSubmit = async () => {
     if (!showingAddNewGameForm.value) {
-        const sessionGame = selectedGame.value;
-        try {
-            const response = await axios.post(route("playSessions.post"), {
-                game_id: sessionGame.id,
-                is_active: true,
-                is_paused: false,
-                notes: null,
-                start_session: new Date().toISOString(),
-            });
-            showingCreateSessionModal.value = false;
-            getGroupedPlaySessions();
-        } catch (error) {
-            console.error("Error starting session:", error);
-        }
+        await postPlaySessions(selectedGame.value);
     } else {
         console.log("Add & Start");
         // todo: implement this
@@ -81,8 +53,13 @@ const toggleAddNewGameForm = (newStatus) => {
     selectedGame.value = "";
 };
 
-onUpdated(() => getGames());
-onMounted(() => getGroupedPlaySessions());
+onUpdated(() => {
+    fetchGames();
+});
+onMounted(() => {
+    fetchGroupedPlaySessions();
+    fetchGames();
+});
 </script>
 
 <template>
