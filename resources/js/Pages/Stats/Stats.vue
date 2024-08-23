@@ -12,7 +12,7 @@ const xAxisValues = ref([]);
 const selectedGame = ref("");
 
 const getWeeklyTotals = async (gameId) => {
-    const { data } = getWeeklyPlaytimeTotals(gameId);
+    const { data } = await getWeeklyPlaytimeTotals(gameId);
     const sortedArrayOfWeeklyTotals = Object.entries(data).sort(
         (a, b) => new Date(a[0]) - new Date(b[0])
     );
