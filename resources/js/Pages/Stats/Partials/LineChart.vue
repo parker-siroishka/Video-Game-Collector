@@ -32,6 +32,7 @@ export default defineComponent({
 
         const chartOptions = computed(() => {
             return {
+                series: [{ data: [] }],
                 chart: {
                     height: 350,
                     type: "line",
