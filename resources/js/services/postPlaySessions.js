@@ -9,8 +9,6 @@ const postPlaySessions = async (sessionGame) => {
             notes: null,
             start_session: new Date().toISOString(),
         });
-        showingCreateSessionModal.value = false;
-        fetchGroupedPlaySessions();
     } catch (error) {
         console.error("Error starting session:", error);
     }
