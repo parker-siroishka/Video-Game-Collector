@@ -25,7 +25,6 @@ export default defineComponent({
         },
     },
     setup(props) {
-        // TODO: fix console error here complaining about 'data' property not being passed
         const chartSeries = computed(() => {
             return props.series ? [props.series] : [{ name: "", data: [] }];
         });
@@ -53,7 +52,7 @@ export default defineComponent({
                 },
                 grid: {
                     row: {
-                        colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+                        colors: ["#f3f3f3", "transparent"],
                         opacity: 0.5,
                     },
                 },

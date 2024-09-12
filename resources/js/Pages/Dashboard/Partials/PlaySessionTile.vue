@@ -20,7 +20,6 @@ const playtime = ref(props.session.game.playtime);
 const estimatedPlaytime = ref(props.session.game.estimated_playtime);
 const gameConsole = ref(props.session.game.console);
 const isActive = ref(props.session.is_active);
-// const id = ref(props.session.id);
 const paused = ref(props.session.is_paused);
 const notes = ref(props.session.notes);
 const notesInitial = ref(props.session.notes);

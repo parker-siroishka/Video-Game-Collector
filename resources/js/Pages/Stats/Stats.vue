@@ -1,15 +1,23 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
+import getGames from "@/services/getGames";
 import getWeeklyPlaytimeTotals from "@/services/getWeeklyPlaytimeTotals";
 import LineChart from "./Partials/LineChart.vue";
 
-const weeklyTotals = ref([]);
+const weeklyTotals = ref({ data: [] });
 const xAxisValues = ref([]);
 const selectedGame = ref("");
+const hasGames = ref(false);
+const games = ref([]);
+
+const fetchGames = async () => {
+    games.value = await getGames();
+    hasGames.value = games.value.length > 0;
+};
 
 const getWeeklyTotals = async (gameId) => {
     const { data } = await getWeeklyPlaytimeTotals(gameId);
@@ -24,7 +32,14 @@ const getWeeklyTotals = async (gameId) => {
     xAxisValues.value = Object.keys(sortedObj);
 };
 
-onMounted(() => getWeeklyTotals(-1));
+const onSelectChange = async () => {
+    getWeeklyTotals(selectedGame.value.id);
+};
+
+onMounted(() => {
+    getWeeklyTotals(-1);
+    fetchGames();
+});
 </script>
 
 <template>
@@ -44,7 +59,8 @@ onMounted(() => getWeeklyTotals(-1));
                     >
                     <select
                         v-model="selectedGame"
-                        :disabled="!hasGames || showingAddNewGameForm"
+                        :disabled="!hasGames"
+                        @change="onSelectChange()"
                         id="games"
                         class="disabled:bg-slate-200 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >

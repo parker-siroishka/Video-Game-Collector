@@ -24,7 +24,6 @@ const onCancel = () => {
 const onSubmit = async (form) => {
     try {
         postGames(form);
-        // Close modal on success
         show.value = false;
         emit("update:showAddNewGameModal", false);
     } catch (error) {
