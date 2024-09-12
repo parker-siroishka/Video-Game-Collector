@@ -1,7 +1,7 @@
 <script setup>
 import Multiselect from "vue-multiselect";
 import { useForm } from "@inertiajs/vue3";
-import { watch, ref, computed, onMounted, defineProps } from "vue";
+import { watch, ref, computed, onMounted } from "vue";
 
 import { COVER_ART_PLACEHOLDER } from "@/Constants/urls";
 

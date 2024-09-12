@@ -1,6 +1,6 @@
 <script setup>
 import moment from "moment";
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";

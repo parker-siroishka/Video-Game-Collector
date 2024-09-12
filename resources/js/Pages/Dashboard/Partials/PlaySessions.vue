@@ -1,6 +1,5 @@
 <script setup>
 import moment from "moment";
-import { defineProps } from "vue";
 import PlaySessionTile from "@/Pages/Dashboard/Partials/PlaySessionTile.vue";
 
 const props = defineProps({

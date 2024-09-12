@@ -42,6 +42,8 @@ const onCancel = () => {
 const onSubmit = async () => {
     if (!showingAddNewGameForm.value) {
         await postPlaySessions(selectedGame.value);
+        showingCreateSessionModal.value = false;
+        fetchGroupedPlaySessions();
     } else {
         console.log("Add & Start");
         // todo: implement this

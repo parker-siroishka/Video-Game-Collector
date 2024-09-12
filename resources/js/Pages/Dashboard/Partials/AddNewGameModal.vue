@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineProps } from "vue";
+import { ref, watch } from "vue";
 
 import AddNewGameForm from "@/Pages/Dashboard/Partials/AddNewGameForm.vue";
 import Modal from "@/Components/Modal.vue";
