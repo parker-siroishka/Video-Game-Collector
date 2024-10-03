@@ -153,7 +153,7 @@ const onClickNotesSubmit = async () => {
 <template>
     <div
         :class="getBorderColor()"
-        class="blocksm:p-6 border-2 border-white-100 mb-5 bg-white sm:rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
+        class="blocksm:p-6 border-2 border-white-100 mb-5 sm:rounded-lg shadow bg-gray-800 hover:bg-gray-700"
     >
         <div
             class="relative flex justify-center sm:hidden block w-full max-h-54 overflow-hidden"
@@ -169,9 +169,7 @@ const onClickNotesSubmit = async () => {
         </div>
         <div class="pt-3 pb-4 px-7">
             <div class="flex justify-between">
-                <h5
-                    class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-                >
+                <h5 class="mb-2 text-3xl font-bold tracking-tight text-white">
                     {{ gameTitle }}
                 </h5>
                 <span v-if="isActive" class="flex align-middle">
@@ -195,7 +193,7 @@ const onClickNotesSubmit = async () => {
                         <div class="w-100">
                             <p
                                 v-if="!sessionEndTime"
-                                class="text-s sm:text-lg font-normal text-gray-700 dark:text-gray-400 mb-4"
+                                class="text-s sm:text-lg font-normal text-gray-400 mb-4"
                             >
                                 Current session <br class="sm:hidden" />
                                 <strong>
@@ -210,20 +208,20 @@ const onClickNotesSubmit = async () => {
                             </p>
                             <p
                                 v-if="sessionEndTime"
-                                class="text-xs sm:text-lg font-bold text-gray-700 dark:text-gray-400 mb-3"
+                                class="text-xs sm:text-lg font-bold text-gray-400 mb-3"
                             >
                                 Duration
                                 <strong>{{ durationHumanized }}</strong>
                             </p>
                             <div class="flex justify-normal sm:block">
                                 <p
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-400"
                                 >
                                     Playtime <strong>{{ playtime }}h</strong>
                                 </p>
                                 <p
                                     v-if="estimatedPlaytime"
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-400"
                                 >
                                     Projected time
                                     <strong
@@ -234,7 +232,7 @@ const onClickNotesSubmit = async () => {
                                 </p>
                                 <p
                                     v-if="gameConsole"
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-700 dark:text-gray-400"
+                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-400"
                                 >
                                     Playing on
                                     <strong>{{ gameConsole }}</strong>
@@ -245,7 +243,7 @@ const onClickNotesSubmit = async () => {
                                     v-if="notes == null"
                                     @click="onClickNotes"
                                     for="message"
-                                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white"
+                                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-white"
                                     >Notes</label
                                 >
                                 <div>
@@ -254,8 +252,8 @@ const onClickNotesSubmit = async () => {
                                             v-model="notes"
                                             id="message"
                                             rows="4"
-                                            class="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Write your thoughts her..."
+                                            class="block p-2 w-full text-sm rounded-lg border focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                                            placeholder="Write your thoughts here..."
                                         >
                                             {{ notes }}
                                         </textarea>
@@ -280,7 +278,7 @@ const onClickNotesSubmit = async () => {
                                     </div>
                                     <p
                                         v-if="!notesOpen"
-                                        class="whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white line-clamp-3 mt-6 mb-4"
+                                        class="whitespace-pre-line text-sm font-medium text-white line-clamp-3 mt-6 mb-4"
                                         @click="onClickNotes"
                                     >
                                         {{ notes }}
@@ -326,7 +324,7 @@ const onClickNotesSubmit = async () => {
                     v-if="notes == null"
                     @click="onClickNotes"
                     for="message"
-                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white"
+                    class="opacity-50 block mb-2 mt-3 text-sm font-medium text-white"
                     >Notes</label
                 >
                 <div>
@@ -335,7 +333,7 @@ const onClickNotesSubmit = async () => {
                             v-model="notes"
                             id="message"
                             rows="4"
-                            class="block p-2.5 w-full mt-3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="block p-2.5 w-full mt-3 text-sm rounded-lg border focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                             placeholder="Write your thoughts here..."
                             >{{ notes }}</textarea
                         >
@@ -360,7 +358,7 @@ const onClickNotesSubmit = async () => {
                     </div>
                     <p
                         v-if="!notesOpen"
-                        class="mt-4 whitespace-pre-line text-sm font-medium text-gray-700 dark:text-white line-clamp-3"
+                        class="mt-4 whitespace-pre-line text-sm font-medium text-white line-clamp-3"
                         @click="onClickNotes"
                     >
                         {{ notes }}
