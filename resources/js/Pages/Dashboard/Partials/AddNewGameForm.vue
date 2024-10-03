@@ -108,7 +108,7 @@ onMounted(() => fetchGetUniqueConsoles());
         <img
             v-if="thumbnailUrl"
             ref="newGameCoverArt"
-            class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24"
+            class="shadow-md shadow-gray-700 object-center object-cover h-28 w-24 rounded-lg ml-5 mt-5 sm:h-36 sm:w-24"
         />
         <InputLabel
             for="console"

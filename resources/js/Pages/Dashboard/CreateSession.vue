@@ -67,9 +67,9 @@ onMounted(() => {
 <template>
     <section class="space-y-6 mt-5">
         <div
-            class="sm:w-fit ml-2 mr-2 flex items-center justify-between bg-white overflow-hidden shadow-sm rounded-lg"
+            class="sm:w-fit ml-2 mr-2 flex items-center justify-between bg-gray-700 overflow-hidden shadow-sm rounded-lg"
         >
-            <div class="p-6 text-gray-900">Start a new gaming session</div>
+            <div class="p-6 text-white">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6"
                 >start</PrimaryButton
             >
@@ -84,7 +84,7 @@ onMounted(() => {
 
         <Modal :show="showingCreateSessionModal" @close="onCancel">
             <div class="p-6">
-                <h2 class="text-lg font-extrabold text-gray-900">
+                <h2 class="text-lg font-extrabold text-white">
                     Start a new game session
                 </h2>
                 <div class="flex place-content-between">
@@ -100,7 +100,7 @@ onMounted(() => {
                                 v-model="selectedGame"
                                 :disabled="!hasGames || showingAddNewGameForm"
                                 id="games"
-                                class="disabled:bg-slate-200 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                                class="disabled:bg-gray-400 disabled:text-gray-500 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                             >
                                 <option selected value="">Select a game</option>
                                 <option v-for="game in games" :value="game">

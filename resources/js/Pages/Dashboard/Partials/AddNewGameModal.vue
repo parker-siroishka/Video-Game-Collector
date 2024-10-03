@@ -43,7 +43,7 @@ watch(
     <div>
         <Modal :show="show" @close="onCancel">
             <div class="p-6">
-                <h2 class="text-lg font-extrabold text-gray-900 pb-3">
+                <h2 class="text-lg font-extrabold text-white pb-3">
                     Add a new game to your collection
                 </h2>
                 <AddNewGameForm

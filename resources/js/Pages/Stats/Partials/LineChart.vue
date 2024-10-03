@@ -39,7 +39,7 @@ export default defineComponent({
                         enabled: false,
                     },
                 },
-                colors: ["#1f2937"],
+                colors: ["#f97316"],
                 dataLabels: {
                     enabled: false,
                 },
@@ -49,6 +49,11 @@ export default defineComponent({
                 title: {
                     text: props.title,
                     align: "left",
+                    style: {
+                        fontWeight: "bold",
+                        fontFamily: undefined,
+                        color: "white",
+                    },
                 },
                 grid: {
                     row: {
@@ -58,6 +63,26 @@ export default defineComponent({
                 },
                 xaxis: {
                     categories: props.xAxis,
+                    labels: {
+                        style: {
+                            colors: "#ffffff",
+                            fontSize: "12px",
+                            fontFamily: "Helvetica, Arial, sans-serif",
+                            fontWeight: 400,
+                            cssClass: "apexcharts-xaxis-label",
+                        },
+                    },
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: "#ffffff",
+                            fontSize: "12px",
+                            fontFamily: "Helvetica, Arial, sans-serif",
+                            fontWeight: 400,
+                            cssClass: "apexcharts-xaxis-label",
+                        },
+                    },
                 },
             };
         });

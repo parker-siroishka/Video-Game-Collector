@@ -48,7 +48,7 @@ onMounted(() => {
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10">
             <div class="pl-4 pr-4">
-                <h1 class="text-2xl font-extrabold text-gray-900">
+                <h1 class="text-2xl font-extrabold text-white mb-5">
                     Total Game Playtime
                 </h1>
                 <form class="max-w-sm mt-3">
