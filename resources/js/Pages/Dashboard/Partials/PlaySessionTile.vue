@@ -1,6 +1,6 @@
 <script setup>
 import moment from "moment";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -12,7 +12,6 @@ const props = defineProps({
     },
 });
 
-const stopwatch = useStopwatch(0, true);
 const notesOpen = ref(false);
 const gameTitle = ref(props.session.game.title);
 const coverartUrl = ref(props.session.game.coverart);
@@ -24,9 +23,12 @@ const paused = ref(props.session.is_paused);
 const notes = ref(props.session.notes);
 const notesInitial = ref(props.session.notes);
 const sessionEndTime = ref(props.session.end_session);
+const sessionPauseTime = ref(props.session.pause_session);
 const sessionStartTime = ref(props.session.start_session);
 const durationMilliseconds = ref(props.session.duration_milliseconds);
 const durationHumanized = ref(props.session.duration_humanized);
+
+let stopwatch = useStopwatch({ autoStart: true });
 
 const pause = () => {
     paused.value = !paused.value;
@@ -49,11 +51,38 @@ const getBorderColor = () => {
     }
 };
 
+const updateActiveSession = () => {
+    let start = moment.utc(sessionStartTime.value, "YYYY-MM-DD HH:mm:ss");
+    let now = moment.utc();
+
+    durationMilliseconds.value = now.diff(start);
+    let duration = moment.duration(durationMilliseconds.value);
+    // stopwatch.hours.value = duration.hours();
+    // stopwatch.minutes.value = duration.minutes();
+    // stopwatch.seconds.value = duration.seconds();
+
+    stopwatch.reset(duration.asSeconds());
+};
+
+const updatePausedSession = () => {
+    let pausedAt = moment.utc(sessionPauseTime.value, "YYYY-MM-DD HH:mm:ss");
+    let start = moment.utc(sessionStartTime.value, "YYYY-MM-DD HH:mm:ss");
+
+    durationMilliseconds.value = pausedAt.diff(start);
+    let duration = moment.duration(durationMilliseconds.value);
+    stopwatch.hours.value = duration.hours();
+    stopwatch.minutes.value = duration.minutes();
+    stopwatch.seconds.value = duration.seconds();
+
+    stopwatch.reset(duration.asSeconds());
+    stopwatch.pause();
+};
+
 const pauseSession = async () => {
     try {
         await axios.patch(
             route("playSessions.patch", { id: props.session.id }),
-            { is_paused: true }
+            { is_paused: true, pause_session: new Date().toISOString() }
         );
     } catch (error) {
         console.error("Error patching session:", error);
@@ -64,7 +93,7 @@ const playSession = async () => {
     try {
         await axios.patch(
             route("playSessions.patch", { id: props.session.id }),
-            { is_paused: false }
+            { is_paused: false, pause_session: null }
         );
     } catch (error) {
         console.error("Error patching session:", error);
@@ -148,6 +177,12 @@ const onClickNotesSubmit = async () => {
         console.error("Error patching session notes:", error);
     }
 };
+
+onMounted(() => {
+    if (paused.value) updatePausedSession();
+    else if (isActive.value && !paused.value) updateActiveSession();
+    else if (!paused.value) stopwatch = useStopwatch(0, true);
+});
 </script>
 
 <template>

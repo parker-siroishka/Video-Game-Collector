@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('play_sessions', function (Blueprint $table) {
-            $table->unsignedBigInteger('duration_milliseconds')->nullable();
-            $table->string('duration_humanized')->nullable();
+            $table->dateTime('pause_session')->nullable();
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('play_sessions', function (Blueprint $table) {
-            $table->dropColumn('duration_milliseconds');
-            $table->dropColumn('duration_humanized');
+            $table->dropColumn('pause_session');
         });
     }
 };
