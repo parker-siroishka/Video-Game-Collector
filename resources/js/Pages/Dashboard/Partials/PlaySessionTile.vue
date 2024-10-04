@@ -24,6 +24,7 @@ const notes = ref(props.session.notes);
 const notesInitial = ref(props.session.notes);
 const sessionEndTime = ref(props.session.end_session);
 const sessionPauseTime = ref(props.session.pause_session);
+const sessionPlayTime = ref(props.session.play_session);
 const sessionStartTime = ref(props.session.start_session);
 const durationMilliseconds = ref(props.session.duration_milliseconds);
 const durationHumanized = ref(props.session.duration_humanized);
@@ -52,27 +53,43 @@ const getBorderColor = () => {
 };
 
 const updateActiveSession = () => {
+    // todo fix janky persistent timing
     let start = moment.utc(sessionStartTime.value, "YYYY-MM-DD HH:mm:ss");
+    let pausedAt = moment.utc(sessionPauseTime.value, "YYYY-MM-DD HH:mm:ss");
+    let playedAt = moment.utc(sessionPlayTime.value, "YYYY-MM-DD HH:mm:ss");
     let now = moment.utc();
+    let pauseOffset;
+    let offsetDuration;
 
-    durationMilliseconds.value = now.diff(start);
-    let duration = moment.duration(durationMilliseconds.value);
-    // stopwatch.hours.value = duration.hours();
-    // stopwatch.minutes.value = duration.minutes();
-    // stopwatch.seconds.value = duration.seconds();
+    if (pausedAt) {
+        pauseOffset = playedAt.diff(pausedAt);
+        pauseOffset = moment.duration(pauseOffset);
 
-    stopwatch.reset(duration.asSeconds());
+        let time = moment.utc();
+        time.subtract(pauseOffset);
+        time = time.diff(start);
+
+        offsetDuration = moment.duration(time);
+        stopwatch.reset(offsetDuration.asSeconds());
+    } else {
+        durationMilliseconds.value = now.diff(start);
+        let duration = moment.duration(durationMilliseconds.value);
+
+        stopwatch.reset(duration.asSeconds());
+    }
 };
 
 const updatePausedSession = () => {
+    // todo fix janky persistent timing
     let pausedAt = moment.utc(sessionPauseTime.value, "YYYY-MM-DD HH:mm:ss");
+    let playedAt = moment.utc(sessionPlayTime.value, "YYYY-MM-DD HH:mm:ss");
     let start = moment.utc(sessionStartTime.value, "YYYY-MM-DD HH:mm:ss");
+    let now = moment.utc();
+
+    let pauseOffset = now.diff(pausedAt);
 
     durationMilliseconds.value = pausedAt.diff(start);
     let duration = moment.duration(durationMilliseconds.value);
-    stopwatch.hours.value = duration.hours();
-    stopwatch.minutes.value = duration.minutes();
-    stopwatch.seconds.value = duration.seconds();
 
     stopwatch.reset(duration.asSeconds());
     stopwatch.pause();
@@ -93,7 +110,7 @@ const playSession = async () => {
     try {
         await axios.patch(
             route("playSessions.patch", { id: props.session.id }),
-            { is_paused: false, pause_session: null }
+            { is_paused: false, play_session: new Date().toISOString() }
         );
     } catch (error) {
         console.error("Error patching session:", error);

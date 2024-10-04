@@ -24,7 +24,8 @@ class PlaySessionController extends Controller
             'is_active' => 'boolean',
             'is_paused' => 'boolean',
             'start_session' => 'required|date',
-            'pause_session' => 'nullable|date', 
+            'pause_session' => 'nullable|date',
+            'play_session' => 'nullable|date',
             'notes' => 'nullable|string'
         ]);
     
@@ -39,6 +40,7 @@ class PlaySessionController extends Controller
         // Use Carbon::parse to handle the various session date values
         $playSession->start_session = Carbon::parse($request->start_session, 'UTC');
         $playSession->pause_session = Carbon::parse($request->pause_session, 'UTC');
+        $playSession->play_session = Carbon::parse($request->play_session, 'UTC');
     
         // Save the new PlaySession
         $playSession->save();
@@ -57,7 +59,8 @@ class PlaySessionController extends Controller
                 'is_active' => 'boolean',
                 'is_paused' => 'boolean',
                 'start_session' => 'date',
-                'pause_session' => 'date',
+                'pause_session' => 'nullable|date',
+                'play_session' => 'nullable|date',
                 'end_session' => 'date',
                 'duration_milliseconds' => 'integer',
                 'duration_humanized' => 'string',

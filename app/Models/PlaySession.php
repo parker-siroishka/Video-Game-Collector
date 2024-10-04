@@ -30,6 +30,7 @@ class PlaySession extends Model
         'notes',
         'start_session',
         'pause_session',
+        'play_session',
         'end_session',
         'duration_milliseconds',
         'duration_humanized'
