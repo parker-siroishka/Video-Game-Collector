@@ -49,7 +49,7 @@ onMounted(() => {
         <div class="max-w-4xl mx-auto mt-10">
             <div class="pl-4 pr-4">
                 <h1 class="text-2xl font-extrabold text-white mb-5">
-                    Total Game Playtime
+                    Game Playtime
                 </h1>
                 <form class="max-w-sm mt-3">
                     <label
@@ -62,13 +62,20 @@ onMounted(() => {
                         :disabled="!hasGames"
                         @change="onSelectChange()"
                         id="games"
-                        class="disabled:bg-slate-200 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                        class="disabled:bg-slate-200 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white mb-10"
                     >
-                        <option selected value="">Select a game</option>
+                        <option selected value="">All games</option>
                         <option v-for="game in games" :value="game">
                             {{ game.title }}
                         </option>
                     </select>
+                    <h2 class="text-xl font-extrabold text-white mb-5">
+                        {{
+                            selectedGame.title
+                                ? selectedGame.title
+                                : "All Games"
+                        }}
+                    </h2>
                 </form>
             </div>
 
