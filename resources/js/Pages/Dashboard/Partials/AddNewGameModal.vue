@@ -23,7 +23,7 @@ const onCancel = () => {
 
 const onSubmit = async (form) => {
     try {
-        postGames(form);
+        await postGames(form);
         show.value = false;
         emit("update:showAddNewGameModal", false);
     } catch (error) {

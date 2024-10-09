@@ -13,6 +13,7 @@ import Header from "@/Components/Header.vue";
 import getGames from "@/services/getGames";
 import getGroupedPlaySessions from "@/services/getGroupedPlaySessions";
 import postPlaySessions from "@/services/postPlaySessions";
+import postGames from "@/services/postGames";
 
 const showingCreateSessionModal = ref(false);
 const showingAddNewGameForm = ref(false);
@@ -39,14 +40,16 @@ const onCancel = () => {
     showingCreateSessionModal.value = false;
 };
 
-const onSubmit = async () => {
+const onSubmit = async (form) => {
     if (!showingAddNewGameForm.value) {
         await postPlaySessions(selectedGame.value);
         showingCreateSessionModal.value = false;
         fetchGroupedPlaySessions();
     } else {
-        console.log("Add & Start");
-        // todo: implement this
+        const createdGame = await postGames(form);
+        await postPlaySessions(createdGame.game);
+        showingCreateSessionModal.value = false;
+        fetchGroupedPlaySessions();
     }
 };
 
@@ -71,8 +74,8 @@ onMounted(() => {
         >
             <div class="p-6 text-white">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6"
-                >start</PrimaryButton
-            >
+                >start
+            </PrimaryButton>
         </div>
         <div class="flex flex-col items-center">
             <Header>Sessions</Header>
