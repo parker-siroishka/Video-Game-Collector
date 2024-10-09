@@ -21,9 +21,9 @@ const formatDate = (date) => {
                 <div
                     class="inline-flex items-center justify-center w-full mb-5"
                 >
-                    <hr class="w-1/2 h-px my-8 border-0 bg-gray-700" />
+                    <hr class="w-3/4 h-px my-8 border-1 border-orange-400" />
                     <span
-                        class="absolute px-3 font-medium -translate-x-1/2 left-1/2 text-white bg-gray-900"
+                        class="absolute px-3 text-xl font-medium -translate-x-1/2 left-1/2 text-white bg-gray-900"
                         >{{ formatDate(date) }}</span
                     >
                 </div>

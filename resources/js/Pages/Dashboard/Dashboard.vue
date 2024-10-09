@@ -18,7 +18,7 @@ const addNewGameClicked = () => {
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <div class="py-12">
+        <div class="sm:py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <CreateSession />
             </div>

@@ -205,7 +205,7 @@ onMounted(() => {
 <template>
     <div
         :class="getBorderColor()"
-        class="blocksm:p-6 border-2 border-gray-600 mb-5 sm:rounded-lg shadow bg-gray-800 hover:bg-gray-700"
+        class="block border-2 border-gray-600 mb-5 sm:rounded-lg shadow bg-gradient-to-t from-transparent to-gray-800 hover:from-transparent hover:to-gray-700"
     >
         <div
             class="relative flex justify-center sm:hidden block w-full max-h-54 overflow-hidden"
@@ -219,9 +219,13 @@ onMounted(() => {
                 :src="coverartUrl"
             />
         </div>
-        <div class="pt-3 pb-4 px-7">
+        <div
+            class="pt-3 pb-4 px-4 bg-gradient-to-t from-transparent to-gray-800"
+        >
             <div class="flex justify-between">
-                <h5 class="mb-2 text-3xl font-bold tracking-tight text-white">
+                <h5
+                    class="mb-2 text-4xl font-extrabold drop-shadow-sm tracking-tight text-white"
+                >
                     {{ gameTitle }}
                 </h5>
                 <span v-if="isActive" class="flex align-middle">
@@ -265,18 +269,23 @@ onMounted(() => {
                                 Duration
                                 <strong>{{ durationHumanized }}</strong>
                             </p>
-                            <div class="flex justify-normal sm:block">
+                            <div
+                                class="flex justify-normal sm:block items-baseline"
+                            >
                                 <p
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-200"
+                                    class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md mr-2"
                                 >
-                                    Playtime <strong>{{ playtime }}h</strong>
+                                    Playtime
+                                    <strong class="text-orange-300"
+                                        >{{ playtime }}h</strong
+                                    >
                                 </p>
                                 <p
                                     v-if="estimatedPlaytime"
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-200"
+                                    class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md mr-2"
                                 >
                                     Projected time
-                                    <strong
+                                    <strong class="text-orange-300"
                                         >{{
                                             Math.round(estimatedPlaytime)
                                         }}h</strong
@@ -284,10 +293,12 @@ onMounted(() => {
                                 </p>
                                 <p
                                     v-if="gameConsole"
-                                    class="text-xs pr-2 sm:text-lg font-normal text-gray-200"
+                                    class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md"
                                 >
                                     Playing on
-                                    <strong>{{ gameConsole }}</strong>
+                                    <strong class="text-orange-300">{{
+                                        gameConsole
+                                    }}</strong>
                                 </p>
                             </div>
                             <div class="hidden sm:block">

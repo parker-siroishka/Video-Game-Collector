@@ -57,7 +57,7 @@ export default defineComponent({
                 },
                 grid: {
                     row: {
-                        colors: ["#f3f3f3", "transparent"],
+                        colors: ["#f3f3f3", "#374151"],
                         opacity: 0.5,
                     },
                 },
