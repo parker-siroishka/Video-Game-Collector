@@ -205,7 +205,7 @@ onMounted(() => {
 <template>
     <div
         :class="getBorderColor()"
-        class="block border-2 border-gray-600 mb-5 sm:rounded-lg shadow bg-gradient-to-t from-transparent to-gray-800 hover:from-transparent hover:to-gray-700"
+        class="block border-2 border-gray-700 mb-5 rounded-md shadow bg-gradient-to-t from-transparent to-gray-800 hover:from-transparent hover:to-gray-700"
     >
         <div
             class="relative flex justify-center sm:hidden block w-full max-h-54 overflow-hidden"
@@ -220,7 +220,7 @@ onMounted(() => {
             />
         </div>
         <div
-            class="pt-3 pb-4 px-4 bg-gradient-to-t from-transparent to-gray-800"
+            class="pt-3 pb-4 px-4 rounded-lg bg-gradient-to-t from-transparent to-gray-800"
         >
             <div class="flex justify-between">
                 <h5

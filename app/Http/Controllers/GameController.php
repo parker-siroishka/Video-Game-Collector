@@ -17,6 +17,7 @@ class GameController extends Controller
     {
         $request->validate([
             'title' => 'required|string',
+            // todo make coverart nullable
             'coverart' => 'required',
             'playtime' => 'required|integer',
             'estimated_playtime' => 'integer',
@@ -38,7 +39,7 @@ class GameController extends Controller
     public function getUserGames(Request $request) 
     {
         $currentUserId = $request->user()->id;
-        $games = Game::where('user_id', $currentUserId)->get();
+        $games = Game::where('user_id', $currentUserId)->orderBy('title', 'asc')->get();
         return response()->json( $games );
     }
 

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUpdated, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Statistics" />
 
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10">
