@@ -24,10 +24,10 @@ const props = defineProps({
 
 <template>
     <!-- todo: link to individual game's page -->
-    <Link>
+    <Link href="#">
         <img
             :src="coverArtUrl"
-            class="h-[176px] w-[100px] rounded-md object-cover z-10 shadow-md shadow-gray-700"
+            class="h-[140px] w-[100px] rounded-md object-cover z-10 shadow-md shadow-gray-700"
         />
     </Link>
 </template>

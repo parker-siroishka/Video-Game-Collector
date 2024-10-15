@@ -374,10 +374,10 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="hidden sm:block sm:w-auto">
+                    <div class="hidden sm:block sm:w-auto mr-5">
                         <img
                             :src="coverartUrl"
-                            class="class=shadow-lg shadow-gray-400 object-center object-cover h-28 w-auto rounded-sm sm:h-36 sm:w-24"
+                            class="shadow-lg shadow-gray-700 object-center object-cover h-28 w-[135px] rounded-md sm:h-[193px]"
                         />
                     </div>
                 </div>
