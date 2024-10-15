@@ -56,6 +56,7 @@ onMounted(() => {
                     <GameTile
                         v-for="game in filteredList()"
                         :coverArtUrl="game.coverart"
+                        :title="game.title"
                     />
                 </div>
                 <div

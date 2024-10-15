@@ -18,7 +18,7 @@ class GameController extends Controller
         $request->validate([
             'title' => 'required|string',
             // todo make coverart nullable
-            'coverart' => 'required',
+            'coverart' => 'string|nullable',
             'playtime' => 'required|integer',
             'estimated_playtime' => 'integer',
             'console' => 'string'
