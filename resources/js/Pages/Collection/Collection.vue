@@ -57,6 +57,7 @@ onMounted(() => {
                         v-for="game in filteredList()"
                         :coverArtUrl="game.coverart"
                         :title="game.title"
+                        :id="game.id"
                     />
                 </div>
                 <div

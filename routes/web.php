@@ -28,12 +28,19 @@ Route::get('/collection', function () {
     return Inertia::render('Collection/Collection');
 })->middleware(['auth', 'verified'])->name('collection');
 
+Route::get('/games/{id}', function ($id) {
+    return Inertia::render('Game/Game', [
+        'gameId' => $id,
+    ]);
+})->middleware(['auth', 'verified'])->name('game');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/games', [GameController::class, 'getUserGames'])->name('games.get');
+    Route::get('/game/{id}', [GameController::class, 'getUserGame'])->name('game.get');
     Route::post('/games', [GameController::class, 'store'])->name('games.post');
     
     Route::get('/consoles', [GameController::class, 'getUniqueConsoles'])->name('games.getUniqueConsoles');

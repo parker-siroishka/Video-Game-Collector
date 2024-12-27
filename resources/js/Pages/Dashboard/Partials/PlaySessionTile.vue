@@ -281,7 +281,10 @@ onMounted(() => {
                                     >
                                 </p>
                                 <p
-                                    v-if="estimatedPlaytime"
+                                    v-if="
+                                        estimatedPlaytime &&
+                                        estimatedPlaytime > 0
+                                    "
                                     class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md mr-2"
                                 >
                                     Projected time

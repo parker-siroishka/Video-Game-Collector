@@ -13,6 +13,10 @@ const props = defineProps({
         type: String,
         default: null,
     },
+    id: {
+        type: Number,
+        default: null,
+    },
 });
 
 const url = ref(COVER_ART_PLACEHOLDER);
@@ -35,7 +39,7 @@ updateArt();
 </script>
 
 <template>
-    <Link href="#" class="relative h-[140px] w-[100px] group">
+    <Link :href="'/games/' + id" class="relative h-[140px] w-[100px] group">
         <img
             :src="url"
             class="h-full w-full rounded-md object-cover z-10 shadow-md shadow-gray-700"

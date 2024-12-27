@@ -43,6 +43,21 @@ class GameController extends Controller
         return response()->json( $games );
     }
 
+    public function getUserGame(Request $request, $id)
+    {
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'The id must be an integer.'], 422);
+        }
+
+        $currentUserId = $request->user()->id;
+        $games = Game::where('user_id', $currentUserId)
+            ->where('id', $id)
+            ->get();
+
+        return response()->json($games);
+    }
+
+
     public function getUniqueConsoles(Request $request)
     {
         $currentUserId = $request->user()->id;
