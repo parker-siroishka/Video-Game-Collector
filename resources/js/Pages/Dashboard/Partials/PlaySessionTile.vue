@@ -4,6 +4,7 @@ import { ref, onMounted } from "vue";
 import { useStopwatch } from "vue-timer-hook";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import GameTile from "@/Components/GameTile.vue";
 
 const props = defineProps({
     session: {
@@ -14,6 +15,7 @@ const props = defineProps({
 
 const notesOpen = ref(false);
 const gameTitle = ref(props.session.game.title);
+const gameId = ref(props.session.game.id);
 const coverartUrl = ref(props.session.game.coverart);
 const playtime = ref(props.session.game.playtime);
 const estimatedPlaytime = ref(props.session.game.estimated_playtime);
@@ -210,9 +212,11 @@ onMounted(() => {
         <div
             class="relative flex justify-center sm:hidden block w-full max-h-54 overflow-hidden"
         >
-            <img
+            <GameTile
                 class="h-[176px] w-auto object-contain z-10 shadow-lg shadow-gray-700"
-                :src="coverartUrl"
+                :coverArtUrl="coverartUrl"
+                :title="gameTitle"
+                :id="gameId"
             />
             <img
                 class="w-full absolute max-h-44 object-cover blur-md opacity-90"
@@ -378,9 +382,15 @@ onMounted(() => {
                 </div>
                 <div class="flex">
                     <div class="hidden sm:block sm:w-auto mr-5">
-                        <img
+                        <!-- <img
                             :src="coverartUrl"
                             class="shadow-lg shadow-gray-700 object-center object-cover h-28 w-[135px] rounded-md sm:h-[193px]"
+                        /> -->
+                        <GameTile
+                            class="shadow-lg shadow-gray-700 object-center object-cover h-28 w-[135px] rounded-md sm:h-[193px]"
+                            :coverArtUrl="coverartUrl"
+                            :title="gameTitle"
+                            :id="gameId"
                         />
                     </div>
                 </div>

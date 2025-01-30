@@ -39,10 +39,10 @@ updateArt();
 </script>
 
 <template>
-    <Link :href="'/games/' + id" class="relative h-[140px] w-[100px] group">
+    <Link :href="'/games/' + id" class="relative group">
         <img
             :src="url"
-            class="h-full w-full rounded-md object-cover z-10 shadow-md shadow-gray-700"
+            class="h-full w-[135px] rounded-md object-cover z-10 shadow-md shadow-gray-700"
         />
         <p
             v-if="showTitle"

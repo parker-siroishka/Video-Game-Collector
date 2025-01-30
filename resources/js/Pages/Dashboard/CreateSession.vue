@@ -116,7 +116,7 @@ onMounted(() => {
                         <img
                             v-if="selectedGame.coverart"
                             :src="selectedGame.coverart"
-                            class="shadow-md shadow-gray-400 object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-36 sm:w-24"
+                            class="shadow-md shadow-gray-700 object-center object-cover h-28 w-24 rounded-lg ml-5 sm:h-36 sm:w-24"
                         />
                     </div>
                 </div>
