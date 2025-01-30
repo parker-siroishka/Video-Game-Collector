@@ -6,6 +6,7 @@ use App\Http\Controllers\PlaySessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Game;
 
 Route::get('/', function () {
     return Inertia::render('Dashboard/Dashboard', [
@@ -29,6 +30,10 @@ Route::get('/collection', function () {
 })->middleware(['auth', 'verified'])->name('collection');
 
 Route::get('/games/{id}', function ($id) {
+    $game = Game::find($id);
+    if (!$game) {
+        return Inertia::render('Error/Error')->with('status', 404);
+    }
     return Inertia::render('Game/Game', [
         'gameId' => $id,
     ]);
@@ -47,6 +52,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/playsessions', [PlaySessionController::class, 'store'])->name('playSessions.post');
     Route::get('/playsessions', [PlaySessionController::class, 'getUserPlaySessions'])->name('playSessions.get');
+    Route::get('/gameplaysessions/{id}', [PlaySessionController::class, 'getGamePlaySessions'])->name('gamePlaySessions.get');
     Route::get('/playsessionsgrouped', [PlaySessionController::class, 'getUserGroupedPlaySessions'])->name('playSessionsGrouped.get');
     Route::get('/playsessions/weeklyTotals', [PlaySessionController::class, 'getTotalSessionTimeByWeek'])->name('playSessionsWeeklyTotals.get');
     Route::patch('/playsessions/{id}', [PlaySessionController::class, 'update'])->name('playSessions.patch');

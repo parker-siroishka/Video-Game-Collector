@@ -1,19 +1,28 @@
 <script setup>
+import moment from "moment";
 import { onMounted, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import getGame from "@/services/getGame";
+import getGamePlaySessions from "@/services/getGamePlaySessions";
 import { COVER_ART_PLACEHOLDER } from "@/Constants/urls";
+import PastPlaySessionTile from "../Dashboard/Partials/PastPlaySessionTile.vue";
 
 const props = defineProps({
     gameId: Number,
 });
 
 const game = ref({});
+const sessions = ref([]);
 
 const fetchGameInfo = async () => {
     const gameData = await getGame(props.gameId);
     game.value = gameData[0];
+    sessions.value = await getGamePlaySessions(props.gameId);
+};
+
+const formatDate = (date) => {
+    return moment(date).format("MMMM Do, YYYY");
 };
 
 onMounted(() => {
@@ -27,7 +36,7 @@ onMounted(() => {
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10 p-4">
             <div
-                class="pt-3 pb-4 px-4 rounded-lg bg-gradient-to-t from-gray-800 to-transparent border-2 border-gray-700"
+                class="pt-3 pb-4 px-4 mb-20 rounded-lg bg-gradient-to-t from-gray-800 to-transparent border-2 border-gray-700"
             >
                 <div
                     class="relative flex justify-center block w-full overflow-hidden"
@@ -95,6 +104,25 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <h1 class="text-3xl text-center font-extrabold text-white mb-5">
+                Past Sessions
+            </h1>
+            <div v-for="(daySessions, date) in sessions" :key="date">
+                <div
+                    class="inline-flex items-center justify-center w-full mb-5"
+                >
+                    <hr class="w-2/5 h-px my-8 border-1 border-orange-300" />
+                    <span
+                        class="absolute px-3 text-xl font-medium -translate-x-1/2 left-1/2 text-white bg-gray-900"
+                        >{{ formatDate(date) }}</span
+                    >
+                </div>
+                <PastPlaySessionTile
+                    v-for="session in daySessions"
+                    :key="session.id"
+                    :session="session"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

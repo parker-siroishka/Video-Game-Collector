@@ -171,4 +171,21 @@ class PlaySessionController extends Controller
         return response()->json($playSessions);
     }
 
+    public function getGamePlaySessions(Request $request, $id)
+    {
+        $gameId = $id;
+        $currentUserId = $request->user()->id;
+        $playSessions = PlaySession::with('game')
+                    ->where('user_id', $currentUserId)
+                    ->where('game_id', $gameId)
+                    ->orderBy('start_session', 'desc')
+                    ->get()
+                    ->groupBy(function($playSession) {
+                        // Group by date part of the start_session
+                        return Carbon::parse($playSession->start_session)->format('Y-m-d');
+                    });
+        
+        return response()->json($playSessions);
+    }
+
 }

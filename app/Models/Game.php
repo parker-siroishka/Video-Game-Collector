@@ -9,6 +9,13 @@ class Game extends Model
 {
     use HasFactory;
 
+
+    public function playSessions()
+    {
+        return $this->hasMany(PlaySession::class);
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
