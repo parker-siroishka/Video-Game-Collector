@@ -175,7 +175,24 @@ class PlaySessionController extends Controller
     {
         $gameId = $id;
         $currentUserId = $request->user()->id;
-        $playSessions = PlaySession::with('game')
+
+        if ($gameId && $gameId == -1) {
+            $playSessions = PlaySession::with('game')
+            ->where('user_id', $currentUserId)
+            ->orderBy('start_session', 'desc')
+            ->get()
+            ->groupBy(function($playSession) {
+                // Group by date part of the start_session
+                return Carbon::parse($playSession->start_session)->format('Y-m-d');
+            });
+        } else {
+            // otherwise we query the sessions of the provided game
+            // Ensure 'game_id' is present in the request
+            if (!isset($validatedData['game_id'])) {
+                // Handle the case where 'game_id' is not provided
+            }
+
+            $playSessions = PlaySession::with('game')
                     ->where('user_id', $currentUserId)
                     ->where('game_id', $gameId)
                     ->orderBy('start_session', 'desc')
@@ -184,6 +201,7 @@ class PlaySessionController extends Controller
                         // Group by date part of the start_session
                         return Carbon::parse($playSession->start_session)->format('Y-m-d');
                     });
+        }
         
         return response()->json($playSessions);
     }

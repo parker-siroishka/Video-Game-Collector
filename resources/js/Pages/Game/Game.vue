@@ -20,7 +20,11 @@ const fetchGameInfo = async () => {
     const gameData = await getGame(props.gameId);
     game.value = gameData[0];
     sessions.value = await getGamePlaySessions(props.gameId);
-    sessionCount.value = Object.keys(sessions.value).length;
+    for (const date in sessions.value) {
+        if (sessions.value.hasOwnProperty(date)) {
+            sessionCount.value += sessions.value[date].length;
+        }
+    }
 };
 
 const formatDate = (date) => {

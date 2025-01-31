@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const getGamePlaySessions = async (id) => {
+const getGamePlaySessions = async (gameId) => {
+    let game_id = gameId ? gameId : -1;
     try {
-        const { data } = await axios.get(route("gamePlaySessions.get", id));
+        const { data } = await axios.get(
+            route("gamePlaySessions.get", game_id)
+        );
         return data;
     } catch (error) {
         console.error("Error fetching game data:", error);
