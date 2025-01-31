@@ -322,7 +322,7 @@ onMounted(() => {
                                             v-model="notes"
                                             id="message"
                                             rows="4"
-                                            class="block p-2 w-full text-sm rounded-lg border focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                                            class="block p-2 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                                             placeholder="Write your thoughts here..."
                                         >
                                             {{ notes }}

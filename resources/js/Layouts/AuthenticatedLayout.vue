@@ -4,6 +4,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
+import RouteHistoryLinks from "@/Components/RouteHistoryLinks.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 
 const showingNavigationDropdown = ref(false);
@@ -198,6 +199,8 @@ const showingNavigationDropdown = ref(false);
             </nav>
             <!-- Page Content -->
             <main>
+                <!-- TODO: figure out proper internal history stepping -->
+                <!-- <RouteHistoryLinks /> -->
                 <slot />
             </main>
         </div>
