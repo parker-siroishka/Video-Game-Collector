@@ -14,11 +14,13 @@ const props = defineProps({
 
 const game = ref({});
 const sessions = ref([]);
+const sessionCount = ref(0);
 
 const fetchGameInfo = async () => {
     const gameData = await getGame(props.gameId);
     game.value = gameData[0];
     sessions.value = await getGamePlaySessions(props.gameId);
+    sessionCount.value = Object.keys(sessions.value).length;
 };
 
 const formatDate = (date) => {
@@ -94,11 +96,21 @@ onMounted(() => {
                         <div class="mb-4 md:mr-5">
                             <p
                                 v-if="game.console"
-                                class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md"
+                                class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md mr-2"
                             >
                                 Playing on
                                 <strong class="text-orange-300">{{
                                     game.console
+                                }}</strong>
+                            </p>
+                        </div>
+                        <div v-if="sessionCount > 0" class="mb-4 md:mr-5">
+                            <p
+                                class="text-xs sm:p-0 p-1 sm:text-lg font-normal text-gray-200 sm:bg-transparent bg-gray-600 rounded-md"
+                            >
+                                Sessions
+                                <strong class="text-orange-300">{{
+                                    sessionCount
                                 }}</strong>
                             </p>
                         </div>
@@ -112,7 +124,9 @@ onMounted(() => {
                 <div
                     class="inline-flex items-center justify-center w-full mb-5"
                 >
-                    <hr class="w-2/5 h-px my-8 border-1 border-orange-300" />
+                    <hr
+                        class="w-4/5 sm:w-2/5 h-px my-8 border-1 border-orange-300"
+                    />
                     <span
                         class="absolute px-3 text-xl font-medium -translate-x-1/2 left-1/2 text-white bg-gray-900"
                         >{{ formatDate(date) }}</span
