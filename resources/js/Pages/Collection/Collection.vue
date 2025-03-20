@@ -58,6 +58,7 @@ onMounted(() => {
                         :coverArtUrl="game.coverart"
                         :title="game.title"
                         :id="game.id"
+                        :enableToolTip="true"
                     />
                 </div>
                 <div

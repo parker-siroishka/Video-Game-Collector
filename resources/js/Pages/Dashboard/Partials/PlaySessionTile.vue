@@ -181,7 +181,6 @@ const onClickNotesClose = () => {
 };
 
 const onClickNotesSubmit = async () => {
-    console.log(notes.value);
     const payload = {
         notes: notes.value,
     };
@@ -217,6 +216,7 @@ onMounted(() => {
                 :coverArtUrl="coverartUrl"
                 :title="gameTitle"
                 :id="gameId"
+                :enableToolTip="false"
             />
             <img
                 class="w-full absolute max-h-44 object-cover blur-md opacity-90"

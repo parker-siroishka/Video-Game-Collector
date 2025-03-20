@@ -7,6 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import getGames from "@/services/getGames";
 import getWeeklyPlaytimeTotals from "@/services/getWeeklyPlaytimeTotals";
 import LineChart from "./Partials/LineChart.vue";
+import HeatMap from "./Partials/HeatMap.vue";
 import getGamePlaySessions from "@/services/getGamePlaySessions";
 
 const weeklyTotals = ref({ data: [] });
@@ -62,7 +63,7 @@ onMounted(() => {
     <Head title="Statistics" />
 
     <AuthenticatedLayout>
-        <div class="max-w-4xl mx-auto mt-10">
+        <div class="max-w-4xl mx-auto mt-10 pb-20">
             <div class="pl-4 pr-4">
                 <h1 class="text-2xl font-extrabold text-white mb-5">
                     Game Playtime
@@ -107,13 +108,14 @@ onMounted(() => {
                 </h2>
             </div>
             <div
-                class="pt-3 pb-4 px-4 mb-20 rounded-lg bg-gradient-to-t bg-[#1e293b] border-2 border-gray-700"
+                class="pt-3 pb-4 rounded-lg bg-gradient-to-t bg-[#1e293b] border-2 border-gray-700 rounded-md"
             >
                 <LineChart
                     :series="weeklyTotals"
                     :xAxis="xAxisValues"
                     title="Total Game Playtime (hrs)"
                 />
+                <HeatMap :series="sessions" title="Session Heatmap" />
             </div>
         </div>
     </AuthenticatedLayout>

@@ -17,6 +17,9 @@ const props = defineProps({
         type: Number,
         default: null,
     },
+    enableToolTip: {
+        type: Boolean,
+    },
 });
 
 const url = ref(COVER_ART_PLACEHOLDER);
@@ -51,6 +54,7 @@ updateArt();
             {{ gameTitle }}
         </p>
         <div
+            v-if="props.enableToolTip == true"
             class="absolute w-full bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-sm text-center font-medium text-white bg-gray-800 rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         >
             <p class="mb-1">{{ props.title }}</p>
