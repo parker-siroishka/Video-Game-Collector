@@ -222,7 +222,8 @@ export default defineComponent({
 
 <style scoped>
 .chart {
-    padding: 0.5rem;
+    margin-top: 60px;
+    padding-left: 0.1rem;
     flex: 1;
 }
 </style>

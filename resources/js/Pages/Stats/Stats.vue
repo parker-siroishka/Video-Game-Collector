@@ -9,6 +9,7 @@ import getWeeklyPlaytimeTotals from "@/services/getWeeklyPlaytimeTotals";
 import LineChart from "./Partials/LineChart.vue";
 import HeatMap from "./Partials/HeatMap.vue";
 import getGamePlaySessions from "@/services/getGamePlaySessions";
+import ProgressBar from "./Partials/ProgressBar.vue";
 
 const weeklyTotals = ref({ data: [] });
 const sessionCount = ref(0);
@@ -65,11 +66,9 @@ onMounted(() => {
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10 pb-20">
             <div class="pl-4 pr-4">
-                <h1 class="text-2xl font-extrabold text-white mb-5">
-                    Game Playtime
-                </h1>
-                <form class="flex items-center space-x-4 mt-3 mb-10">
-                    <div class="flex-1">
+                <h1 class="text-2xl font-extrabold text-white mb-5">Stats</h1>
+                <form class="flex flex-col space-y-4 mt-3 mb-10">
+                    <div class="flex-1 sm:w-3/4 md:w-1/2">
                         <label
                             for="games"
                             class="block mb-2 text-sm font-medium text-white"
@@ -88,22 +87,42 @@ onMounted(() => {
                             </option>
                         </select>
                     </div>
-                    <div class="flex-1 flex justify-end">
-                        <div
-                            class="inline-block p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 ml-auto"
-                        >
-                            <p
-                                class="text-xs sm:text-lg font-bold text-gray-200 mb-3"
+                    <div class="flex flex-row justify-start md:justify-end">
+                        <div class="flex mr-5">
+                            <div
+                                class="inline-block p-6 border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
                             >
-                                Total Sessions
-                            </p>
-                            <h1 class="text-6xl font-extrabold text-orange-500">
-                                {{ sessionCount }}
-                            </h1>
+                                <p
+                                    class="text-lg font-bold text-gray-200 mb-3 items-center"
+                                >
+                                    Total Sessions
+                                </p>
+                                <h1
+                                    class="mt-10 flex text-6xl font-extrabold text-orange-500 justify-center"
+                                >
+                                    {{ sessionCount }}
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex">
+                            <div
+                                v-if="selectedGame.estimated_playtime"
+                                class="w-[165px] inline-block bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+                            >
+                                <p
+                                    class="text-center text-lg p-6 pb-0 sm:text-lg font-bold text-gray-200"
+                                >
+                                    Estimated Completion
+                                </p>
+                                <ProgressBar
+                                    :selectedGame="selectedGame"
+                                    :games="games"
+                                />
+                            </div>
                         </div>
                     </div>
                 </form>
-                <h2 class="text-xl font-extrabold text-white mb-5">
+                <h2 class="text-4xl font-extrabold text-white mb-5">
                     {{ selectedGame.title ? selectedGame.title : "All Games" }}
                 </h2>
             </div>
