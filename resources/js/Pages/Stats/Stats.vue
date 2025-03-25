@@ -66,7 +66,9 @@ onMounted(() => {
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10 pb-20">
             <div class="pl-4 pr-4">
-                <h1 class="text-2xl font-extrabold text-white mb-5">Stats</h1>
+                <h1 class="text-2xl font-extrabold text-white mb-5 ml-2">
+                    Stats
+                </h1>
                 <form class="flex flex-col space-y-4 mt-3 mb-10">
                     <div class="flex-1 sm:w-3/4 md:w-1/2">
                         <label

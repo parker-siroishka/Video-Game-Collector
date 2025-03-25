@@ -34,7 +34,7 @@ onMounted(() => {
     <AuthenticatedLayout>
         <div class="max-w-4xl mx-auto mt-10">
             <div class="pl-4 pr-4">
-                <h1 class="text-2xl font-extrabold text-white mb-5">
+                <h1 class="text-2xl font-extrabold text-white mb-5 ml-2">
                     Collection
                 </h1>
                 <div class="flex items-center">
