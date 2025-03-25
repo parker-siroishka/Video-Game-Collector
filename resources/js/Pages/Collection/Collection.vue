@@ -40,7 +40,7 @@ onMounted(() => {
                 <div class="flex items-center">
                     <img
                         src="../../../assets/images/magnifying-glass.png"
-                        class="mr-3"
+                        class="mr-3 w-9 h-9"
                     />
                     <TextInput
                         id="title"
@@ -59,6 +59,7 @@ onMounted(() => {
                         :title="game.title"
                         :id="game.id"
                         :enableToolTip="true"
+                        :needsTitle="true"
                     />
                 </div>
                 <div

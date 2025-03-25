@@ -20,6 +20,9 @@ const props = defineProps({
     enableToolTip: {
         type: Boolean,
     },
+    needsTitle: {
+        type: Boolean,
+    },
 });
 
 const url = ref(COVER_ART_PLACEHOLDER);
@@ -48,7 +51,7 @@ updateArt();
             class="h-full w-[135px] rounded-md object-cover z-10 shadow-md shadow-gray-700"
         />
         <p
-            v-if="showTitle"
+            v-if="props.needsTitle && showTitle"
             class="absolute inset-0 flex items-center justify-center text-center text-white text-sm font-bold bg-black bg-opacity-50 p-2"
         >
             {{ gameTitle }}

@@ -14,6 +14,7 @@ import getGames from "@/services/getGames";
 import getGroupedPlaySessions from "@/services/getGroupedPlaySessions";
 import postPlaySessions from "@/services/postPlaySessions";
 import postGames from "@/services/postGames";
+import RecentlyPlayed from "./Partials/RecentlyPlayed.vue";
 
 const showingCreateSessionModal = ref(false);
 const showingAddNewGameForm = ref(false);
@@ -71,13 +72,14 @@ onMounted(() => {
     <section class="space-y-6 max-w-4xl mx-auto mt-10 pb-20">
         <h1 class="text-2xl font-extrabold text-white mb-5 ml-2">Sessions</h1>
         <div
-            class="sm:w-fit mr-2 flex items-center justify-between bg-gray-700 overflow-hidden shadow-sm rounded-lg"
+            class="sm:w-fit ml-2 mr-2 flex items-center justify-between bg-gray-700 overflow-hidden shadow-sm rounded-lg"
         >
             <div class="p-6 text-white">Start a new gaming session</div>
             <PrimaryButton @click="showCreateSessionModal" class="mr-6"
                 >start
             </PrimaryButton>
         </div>
+        <RecentlyPlayed />
         <div class="flex flex-col items-center">
             <h2 v-if="sessions.length == 0" class="block mt-20 text-gray-500">
                 No sessions logged

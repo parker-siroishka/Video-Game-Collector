@@ -217,6 +217,7 @@ onMounted(() => {
                 :title="gameTitle"
                 :id="gameId"
                 :enableToolTip="false"
+                :needsTitle="false"
             />
             <img
                 class="w-full absolute max-h-44 object-cover blur-md opacity-90"
@@ -382,10 +383,6 @@ onMounted(() => {
                 </div>
                 <div class="flex">
                     <div class="hidden sm:block sm:w-auto mr-5">
-                        <!-- <img
-                            :src="coverartUrl"
-                            class="shadow-lg shadow-gray-700 object-center object-cover h-28 w-[135px] rounded-md sm:h-[193px]"
-                        /> -->
                         <GameTile
                             class="shadow-lg shadow-gray-700 object-center object-cover h-28 w-[135px] rounded-md sm:h-[193px]"
                             :coverArtUrl="coverartUrl"

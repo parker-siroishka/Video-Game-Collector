@@ -37,6 +37,7 @@ export default {
             blur: {
                 xs: "3px",
             },
+            display: ["group-hover"],
         },
     },
 
