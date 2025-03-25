@@ -8,6 +8,7 @@ import { COVER_ART_PLACEHOLDER } from "@/Constants/urls";
 import TextInput from "@/Components/TextInput.vue";
 import NumberInput from "@/Components/NumberInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import ToolTip from "@/Components/ToolTip.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
@@ -98,13 +99,19 @@ onMounted(() => fetchGetUniqueConsoles());
             v-model="addNewGameForm.title"
         />
         <InputLabel for="coverArt" value="Cover Art URL" class="mt-5" />
-        <TextInput
-            id="coverArt"
-            class="mt-1 block w-full sm:w-3/4"
-            required
-            placeholder="Enter cover art URL"
-            v-model="addNewGameForm.thumbnailUrl"
-        />
+        <div class="flex items-center">
+            <TextInput
+                id="coverArt"
+                class="mt-1 block w-full sm:w-3/4"
+                required
+                placeholder="Enter cover art URL"
+                v-model="addNewGameForm.thumbnailUrl"
+            />
+            <ToolTip
+                tooltipContent="For the best framing, try to use an aspect ratio of 1:1.5"
+            />
+        </div>
+
         <img
             v-if="thumbnailUrl"
             ref="newGameCoverArt"
