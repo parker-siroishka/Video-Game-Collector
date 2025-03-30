@@ -64,3 +64,25 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+### Docker stuffs
+https://github.com/dockersamples/laravel-docker-examples
+
+
+## Local Dev
+
+Prerequisites: docker compose
+
+Run ```docker compose -f compose.dev.yaml build```
+    ```docker compose -f compose.dev.yaml up -d```
+When the containers boot up run 
+    ```docker compose -f compose.dev.yaml exec workspace bash```
+This will connect you to the workspace container - in that container run the following commands
+    ```composer install```
+    ```npm install```
+    ```npm run dev```
+Your frontend is now running
+Then run ```docker compose -f compose.dev.yaml exec workspace php artisan migrate ```
+
+and now you should be able to see your app at ```localhost```
+
